@@ -1,0 +1,19 @@
+{
+  "name": "nu-chao-ecommerce",
+  "version": "1.0.0",
+  "description": "Frontend simples de e-commerce de roupas para Guiné-Bissau em HTML, CSS e JavaScript puro.",
+  "scripts": {
+    "start": "echo Abra o ficheiro index.html no navegador ou utilize o XAMPP para servir esta pasta."
+  },
+  "keywords": [
+    "ecommerce",
+    "guine-bissau",
+    "roupas",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Nu Chao",
+  "license": "MIT"
+}
+

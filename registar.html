@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta - Nu Chao</title>
+  <link rel="icon" type="image/png" href="assets/logo-nc.png">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    .register-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .register-card { width: 100%; max-width: 420px; background: var(--bg-elevated, #fff); border-radius: var(--radius-lg, 24px); padding: 28px; border: 1px solid rgba(46,125,50,0.3); box-shadow: 0 18px 45px rgba(46,125,50,0.15); }
+    .register-card h1 { font-size: 22px; margin-bottom: 8px; color: var(--text, #1b5e20); }
+    .register-card p { color: var(--muted, #4a6b4a); font-size: 13px; margin-bottom: 20px; }
+    .register-form label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .register-form input, .register-form textarea { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(46,125,50,0.35); background: #fff; color: var(--text, #1b5e20); font-size: 14px; margin-bottom: 14px; box-sizing: border-box; }
+    .register-form textarea { min-height: 70px; resize: vertical; }
+    .register-form button { width: 100%; padding: 12px; border-radius: 999px; background: linear-gradient(135deg, #43a047, #2e7d32); color: #fff; font-weight: 600; border: none; cursor: pointer; font-size: 14px; }
+    .register-form button:hover { opacity: 0.95; }
+    .register-success { color: #2e7d32; font-size: 13px; margin-top: 12px; }
+    .register-error { color: #c62828; font-size: 12px; margin-top: 8px; }
+    .register-footer { margin-top: 16px; text-align: center; }
+    .register-footer a { color: var(--accent, #2e7d32); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="register-page">
+    <div class="register-card">
+      <h1>Criar conta</h1>
+      <p>Registe-se para receber novidades e facilitar as suas compras na Nu Chao.</p>
+      <form class="register-form" id="registerForm">
+        <label for="regName">Nome completo</label>
+        <input type="text" id="regName" name="name" required placeholder="O seu nome">
+        <label for="regPhone">Telefone (WhatsApp)</label>
+        <input type="tel" id="regPhone" name="phone" required placeholder="+245 900 000 000">
+        <label for="regEmail">Email</label>
+        <input type="email" id="regEmail" name="email" placeholder="email@exemplo.com">
+        <label for="regAddress">Morada</label>
+        <textarea id="regAddress" name="address" placeholder="Bairro, cidade..."></textarea>
+        <button type="submit">Registar</button>
+        <p class="register-success" id="registerSuccess" role="status" style="display:none;">Conta criada com sucesso. Pode voltar à loja.</p>
+        <p class="register-error" id="registerError" role="alert" style="display:none;"></p>
+      </form>
+      <div class="register-footer">
+        <a href="login.html">Já tem conta? Entrar</a> &middot; <a href="index.html">Voltar à loja</a>
+      </div>
+    </div>
+  </div>
+  <script src="js/db.js"></script>
+  <script>
+    (function () {
+      document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var name = document.getElementById("regName").value.trim();
+        var phone = document.getElementById("regPhone").value.trim();
+        var email = document.getElementById("regEmail").value.trim();
+        var address = document.getElementById("regAddress").value.trim();
+        var errEl = document.getElementById("registerError");
+        var okEl = document.getElementById("registerSuccess");
+        errEl.style.display = "none";
+        okEl.style.display = "none";
+        if (!name || !phone) {
+          errEl.textContent = "Preencha nome e telefone.";
+          errEl.style.display = "block";
+          return;
+        }
+        if (window.LojaDB && window.LojaDB.addCustomer) {
+          window.LojaDB.addCustomer({ name: name, phone: phone, email: email, address: address });
+          okEl.style.display = "block";
+          document.getElementById("registerForm").reset();
+          setTimeout(function () { window.location.href = "index.html"; }, 1500);
+        } else {
+          errEl.textContent = "Erro ao guardar. Tente de novo.";
+          errEl.style.display = "block";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

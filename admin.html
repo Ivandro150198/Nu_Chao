@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administra&#231;&#227;o - Nu Chao</title>
+  <link rel="icon" type="image/png" href="assets/logo-nc.png">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-header">
+      <h1>Painel administrativo</h1>
+      <div>
+        <a href="index.html">Ver loja</a>
+        <a href="#" id="adminLogout">Sair</a>
+      </div>
+    </header>
+
+    <nav class="admin-tabs" role="tablist" aria-label="Sec&#231;&#245;es do painel">
+      <button type="button" class="admin-tab active" role="tab" aria-selected="true" data-tab="catalogo">Cat&#225;logo</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="pedidos">Pedidos</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="estoque">Estoque</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="clientes">Clientes</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="marketing">Marketing</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="relatorios">Relat&#243;rios</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="config">Configura&#231;&#245;es</button>
+    </nav>
+
+    <!-- CATÁLOGO -->
+    <section class="admin-panel active" id="panel-catalogo">
+      <div class="admin-section">
+        <h2>Produtos</h2>
+        <p class="admin-desc">Cadastro com descri&#231;&#227;o t&#233;cnica, composi&#231;&#227;o, cole&#231;&#227;o e varia&#231;&#245;es (SKU).</p>
+        <table class="admin-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Cole&#231;&#227;o</th>
+              <th>Pre&#231;o</th>
+              <th>Stock</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="productsBody"></tbody>
+        </table>
+        <div class="admin-form" id="productForm">
+          <h3>Adicionar / editar produto</h3>
+          <input type="hidden" id="productId" />
+          <div class="form-row">
+            <label>T&#237;tulo <input type="text" id="productName" required /></label>
+            <label>Categoria
+              <select id="productCategory">
+                <option value="feminino">Feminino</option>
+                <option value="masculino">Masculino</option>
+                <option value="unissex">Unissex</option>
+                <option value="acessorios">Acess&#243;rios</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Cole&#231;&#227;o <input type="text" id="productCollection" placeholder="Ver&#227;o, Inverno, etc." /></label>
+            <label>Tipo <select id="productType">
+              <option value="casual">Casual</option>
+              <option value="formal">Formal</option>
+              <option value="festivo">Festivo</option>
+            </select></label>
+          </div>
+          <label>Descri&#231;&#227;o t&#233;cnica <textarea id="productDescription" rows="2"></textarea></label>
+          <label>Composi&#231;&#227;o do tecido <input type="text" id="productComposition" placeholder="ex: 100% algod&#227;o" /></label>
+          <label>Guia de tamanhos (texto) <textarea id="productSizeGuide" rows="2" placeholder="S=34-36, M=38-40..."></textarea></label>
+          <div class="form-row">
+            <label>Pre&#231;o (CFA) <input type="number" id="productPrice" min="0" required /></label>
+            <label>Local <input type="text" id="productLocation" placeholder="Bissau" /></label>
+          </div>
+          <div class="form-row">
+            <label>Tamanhos (v&#237;rgula) <input type="text" id="productSizes" placeholder="S, M, L" /></label>
+            <label>Etiqueta <select id="productTag">
+              <option value="">Nenhuma</option>
+              <option value="new">Novo</option>
+              <option value="bestseller">Mais vendido</option>
+            </select></label>
+          </div>
+          <label>Varia&#231;&#245;es / SKU (uma por linha: ex. Camiseta Azul - G) <textarea id="productSkus" rows="3" placeholder="Camiseta Azul - S&#10;Camiseta Azul - M"></textarea></label>
+          <label>URL imagem principal <input type="text" id="productImage" placeholder="assets/prod-1.jpg" /></label>
+          <label>Galeria (URLs, uma por linha) <textarea id="productGallery" rows="2" placeholder="assets/prod-1.jpg"></textarea></label>
+          <label><input type="checkbox" id="productInStock" checked /> Em stock</label>
+          <div>
+            <button type="button" class="btn-add" id="productSave">Guardar</button>
+            <button type="button" class="btn-sm" id="productCancel">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h2>Slides do hero (carrossel)</h2>
+        <div id="heroesList"></div>
+        <div class="admin-form" id="heroForm">
+          <h3>Adicionar / editar slide</h3>
+          <input type="hidden" id="heroId" />
+          <label>URL imagem de fundo <input type="text" id="heroImage" placeholder="assets/hero-banner.png" /></label>
+          <label>T&#237;tulo <input type="text" id="heroTitle" /></label>
+          <label>Subt&#237;tulo <textarea id="heroSubtitle" rows="2"></textarea></label>
+          <label>Badges (uma por linha) <textarea id="heroBadges" rows="3"></textarea></label>
+          <label><input type="checkbox" id="heroGradient" /> Fundo gradiente (sem imagem)</label>
+          <div>
+            <button type="button" class="btn-add" id="heroSave">Guardar slide</button>
+            <button type="button" class="btn-sm" id="heroCancel">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PEDIDOS -->
+    <section class="admin-panel" id="panel-pedidos">
+      <div class="admin-section">
+        <h2>Gest&#227;o de pedidos</h2>
+        <p class="admin-desc">Altere o status e adicione c&#243;digo de rastreio.</p>
+        <table class="admin-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+        <p class="empty-msg" id="ordersEmpty">Nenhum pedido.</p>
+        <div class="admin-form order-edit-form" id="orderEditForm">
+          <h3>Editar pedido <span id="orderEditId"></span></h3>
+          <input type="hidden" id="orderId" />
+          <label>Status <select id="orderStatus">
+            <option value="Aguardando Pagamento">Aguardando Pagamento</option>
+            <option value="Pago">Pago</option>
+            <option value="Em Separa&#231;&#227;o">Em Separa&#231;&#227;o</option>
+            <option value="Enviado">Enviado</option>
+            <option value="Entregue">Entregue</option>
+            <option value="Cancelado">Cancelado</option>
+          </select></label>
+          <label>C&#243;digo de rastreio <input type="text" id="orderTracking" placeholder="ex: GB123456789" /></label>
+          <div><button type="button" class="btn-add" id="orderSave">Guardar</button> <button type="button" class="btn-sm" id="orderCancel">Cancelar</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTOQUE -->
+    <section class="admin-panel" id="panel-estoque">
+      <div class="admin-section">
+        <h2>Controle de invent&#225;rio</h2>
+        <p class="admin-desc">Alertas de estoque baixo e atualiza&#231;&#227;o em massa.</p>
+        <label>Alerta quando quantidade &lt; <input type="number" id="lowStockThreshold" min="0" value="5" class="input-qty" /> unidades</label>
+        <button type="button" class="btn-sm" id="saveStockSettings">Guardar</button>
+        <table class="admin-table" id="stockTable">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Stock</th>
+              <th>Alerta</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="admin-panel" id="panel-clientes">
+      <div class="admin-section">
+        <h2>Base de clientes</h2>
+        <p class="admin-desc">Cadastre clientes manualmente ou consulte os que surgem dos pedidos.</p>
+        <div class="admin-form" id="customerForm">
+          <h3>Cadastrar cliente</h3>
+          <div class="form-row">
+            <label>Nome <input type="text" id="customerName" required /></label>
+            <label>Telefone <input type="tel" id="customerPhone" required placeholder="+245 900 000 000" /></label>
+          </div>
+          <div class="form-row">
+            <label>Email <input type="email" id="customerEmail" placeholder="email@exemplo.com" /></label>
+            <label>Morada <input type="text" id="customerAddress" placeholder="Bissau, bairro..." /></label>
+          </div>
+          <div>
+            <button type="button" class="btn-add" id="customerSave">Guardar cliente</button>
+          </div>
+        </div>
+        <table class="admin-table" id="customersTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Email</th>
+              <th>Origem</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="customersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MARKETING -->
+    <section class="admin-panel" id="panel-marketing">
+      <div class="admin-section">
+        <h2>Cupons de desconto</h2>
+        <p class="admin-desc">C&#243;digos por valor fixo, percentagem ou frete gr&#225;tis.</p>
+        <table class="admin-table" id="couponsTable">
+          <thead>
+            <tr>
+              <th>C&#243;digo</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>V&#225;lido at&#233;</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="couponsBody"></tbody>
+        </table>
+        <div class="admin-form" id="couponForm">
+          <h3>Novo cupom</h3>
+          <div class="form-row">
+            <label>C&#243;digo <input type="text" id="couponCode" placeholder="VERAO2025" /></label>
+            <label>Tipo <select id="couponType">
+              <option value="fixed">Valor fixo (CFA)</option>
+              <option value="percent">Percentagem</option>
+              <option value="shipping">Frete gr&#225;tis</option>
+            </select></label>
+          </div>
+          <div class="form-row">
+            <label>Valor <input type="text" id="couponValue" placeholder="5000 ou 10" /></label>
+            <label>V&#225;lido at&#233; <input type="date" id="couponValidTo" /></label>
+          </div>
+          <label>Pedido m&#237;nimo (CFA) <input type="number" id="couponMinOrder" min="0" value="0" /></label>
+          <div><button type="button" class="btn-add" id="couponSave">Criar cupom</button></div>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h2>Newsletter</h2>
+        <p class="admin-desc">Emails captados para campanhas.</p>
+        <div class="form-row">
+          <input type="email" id="newsletterEmail" placeholder="email@exemplo.com" />
+          <button type="button" class="btn-add" id="newsletterAdd">Adicionar</button>
+        </div>
+        <ul id="newsletterList" class="admin-list"></ul>
+      </div>
+    </section>
+
+    <!-- RELATÓRIOS -->
+    <section class="admin-panel" id="panel-relatorios">
+      <div class="admin-section">
+        <h2>Dashboard de vendas</h2>
+        <div class="dashboard-cards" id="dashboardCards"></div>
+        <h3 class="admin-h3">Produtos mais vendidos</h3>
+        <table class="admin-table" id="bestsellersTable">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Qtd vendida</th>
+            </tr>
+          </thead>
+          <tbody id="bestsellersBody"></tbody>
+        </table>
+        <h3 class="admin-h3">Produtos em alerta (estoque baixo)</h3>
+        <ul id="lowStockList" class="admin-list"></ul>
+      </div>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section class="admin-panel" id="panel-config">
+      <div class="admin-section">
+        <h2>SEO</h2>
+        <label>Meta t&#237;tulo <input type="text" id="seoTitle" placeholder="Nu Chao - Moda Guin&#233;-Bissau" /></label>
+        <label>Meta descri&#231;&#227;o <textarea id="seoDescription" rows="2"></textarea></label>
+        <button type="button" class="btn-add" id="seoSave">Guardar SEO</button>
+      </div>
+      <div class="admin-section">
+        <h2>Utilizadores do admin</h2>
+        <p class="admin-desc">N&#237;veis: Admin, Gerente, Atendente.</p>
+        <table class="admin-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>Login</th>
+              <th>Perfil</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+        <div class="admin-form" id="userForm">
+          <h3>Adicionar utilizador</h3>
+          <div class="form-row">
+            <label>Login <input type="text" id="userLogin" /></label>
+            <label>Palavra-passe <input type="password" id="userPassword" /></label>
+          </div>
+          <label>Perfil <select id="userRole">
+            <option value="admin">Admin total</option>
+            <option value="gerente">Gerente estoque</option>
+            <option value="atendente">Atendente</option>
+          </select></label>
+          <button type="button" class="btn-add" id="userSave">Adicionar</button>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h2>Log de auditoria</h2>
+        <p class="admin-desc">&#218;ltimas altera&#231;&#245;es (quem, o qu&#234;, quando).</p>
+        <ul id="auditLogList" class="admin-list audit-log"></ul>
+      </div>
+    </section>
+  </div>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

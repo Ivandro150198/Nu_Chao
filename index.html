@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Language" content="pt">
+  <title>Nu Chao - Moda na Guin&#233;-Bissau</title>
+  <meta name="description" content="Roupas de Fuca &#183; Loja No Ch&#227;o &#183; By Aissatu Jafono. Moda inspirada na Guin&#233;-Bissau, com tecidos africanos, cortes modernos e envio r&#225;pido em todo o pa&#237;s.">
+  <meta name="theme-color" content="#e8f5e9">
+  <link rel="icon" type="image/png" href="assets/logo-nc.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <img src="assets/logo-nc.png" alt="Roupas de Fuca - Loja No Ch&#227;o" class="brand-logo" />
+      </div>
+      <nav class="main-nav">
+        <a href="#hero">In&#237;cio</a>
+        <a href="#products">Produtos</a>
+        <a href="#about">Sobre</a>
+        <a href="#contact">Contacto</a>
+      </nav>
+      <div class="actions">
+        <span id="authNav" class="auth-nav"><a href="registar.html" class="icon-button auth-icon" aria-label="Criar conta" title="Criar conta">&#128221;</a> <a href="login.html" class="icon-button auth-icon" aria-label="Entrar" title="Entrar">&#128100;</a></span>
+        <button class="icon-button" id="searchToggle" aria-label="Pesquisar produtos">&#128269;</button>
+        <button class="icon-button cart-button" id="cartToggle" aria-label="Abrir carrinho">&#128722;<span class="cart-count" id="cartCount">0</span></button>
+      </div>
+    </div>
+    <div class="search-bar container" id="searchBar">
+      <input type="text" id="searchInput" placeholder="Pesquisar por camisolas, vestidos, tecidos africanos..." />
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-carousel">
+        <div class="hero-track" id="heroTrack">
+          <div class="hero-slide hero-slide--image" data-slide="0" style="background-image: url('assets/hero-banner.png');">
+            <div class="hero-overlay"></div>
+            <div class="container hero-inner">
+              <div class="hero-text">
+                <h1>Roupas de Fuca &#183; Loja No Ch&#227;o</h1>
+                <p>By Aissatu Jafono. Moda inspirada na Guin&#233;-Bissau com tecidos africanos e estilo crioulo.</p>
+                <div class="hero-actions">
+                  <a href="#products" class="btn primary">Ver cole&#231;&#245;es</a>
+                  <a href="#about" class="btn ghost">Saber mais</a>
+                </div>
+                <div class="hero-badges">
+                  <span>&#10003; Pagamento na entrega (Bissau)</span>
+                  <span>&#10003; Entregas em at&#233; 48h</span>
+                  <span>&#10003; Suporte via WhatsApp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-slide hero-slide--gradient" data-slide="1">
+            <div class="hero-overlay hero-overlay--dark"></div>
+            <div class="container hero-inner">
+              <div class="hero-text">
+                <h1>Moda inspirada na Guin&#233;-Bissau</h1>
+                <p>Descubra cole&#231;&#245;es exclusivas com tecidos africanos, cortes modernos e envio r&#225;pido em todo o pa&#237;s.</p>
+                <div class="hero-actions">
+                  <a href="#products" class="btn primary">Ver cole&#231;&#245;es</a>
+                  <a href="#about" class="btn ghost">Saber mais</a>
+                </div>
+                <div class="hero-badges">
+                  <span>&#10003; Pagamento na entrega (Bissau)</span>
+                  <span>&#10003; Entregas em at&#233; 48h</span>
+                  <span>&#10003; Suporte via WhatsApp</span>
+                </div>
+              </div>
+              <div class="hero-image">
+                <div class="hero-card">
+                  <span class="pill">Nova Cole&#231;&#227;o</span>
+                  <h2>Estilo Crioulo</h2>
+                  <p>Pe&#231;as pensadas para o dia-a-dia, festas e cerim&#243;nias.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="hero-carousel-btn hero-carousel-btn--prev" id="heroPrev" aria-label="Slide anterior">&#8249;</button>
+        <button type="button" class="hero-carousel-btn hero-carousel-btn--next" id="heroNext" aria-label="Slide seguinte">&#8250;</button>
+        <div class="hero-dots" id="heroDots" role="tablist"></div>
+      </div>
+    </section>
+
+    <section class="filters container">
+      <div class="filter-group">
+        <label for="categoryFilter">Categoria</label>
+        <select id="categoryFilter">
+          <option value="all">Todas</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="unissex">Unissex</option>
+          <option value="acessorios">Acess&#243;rios</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="sortFilter">Ordenar por</label>
+        <select id="sortFilter">
+          <option value="featured">Destaques</option>
+          <option value="price-asc">Pre&#231;o: menor para maior</option>
+          <option value="price-desc">Pre&#231;o: maior para menor</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="priceFilter">Pre&#231;o m&#225;ximo (CFA)</label>
+        <input type="range" id="priceFilter" min="5000" max="60000" step="5000" value="60000">
+        <span id="priceLabel">At&#233; 60 000 CFA</span>
+      </div>
+    </section>
+
+    <section class="products-section" id="products">
+      <div class="container">
+        <h2>Produtos em destaque</h2>
+        <p class="section-subtitle">Escolha o seu estilo preferido e finalize a compra pelo site ou via WhatsApp.</p>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <section class="highlight-banner">
+      <div class="container highlight-inner">
+        <div>
+          <h2>Envio r&#225;pido para Bissau e arredores</h2>
+          <p>Receba as suas pe&#231;as sem sair de casa. Pagamento seguro e acompanhamento do pedido pelo WhatsApp.</p>
+        </div>
+        <a href="#contact" class="btn light">Falar com a equipa</a>
+      </div>
+    </section>
+
+    <section class="info-sections container" id="about">
+      <div class="info-card">
+        <h3>Sobre a Nu Chao</h3>
+        <p>Somos uma marca de moda criada na Guin&#233;-Bissau, focada em valorizar a cultura, o conforto e a eleg&#226;ncia no dia-a-dia.</p>
+        <p>Trabalhamos com costureiros locais e tecidos selecionados para garantir qualidade e estilo em cada pe&#231;a.</p>
+      </div>
+      <div class="info-card">
+        <h3>Como comprar</h3>
+        <ol>
+          <li>Escolha os produtos e adicione ao carrinho.</li>
+          <li>Clique em "Finalizar pedido".</li>
+          <li>Preencha os seus dados e confirme.</li>
+          <li>Receba a confirma&#231;&#227;o no WhatsApp com os detalhes de entrega e pagamento.</li>
+        </ol>
+      </div>
+      <div class="info-card" id="contact">
+        <h3>Contacto</h3>
+        <p>Tem d&#250;vidas sobre tamanhos, cores ou envios?</p>
+        <p><strong>WhatsApp:</strong> +245 900 0000</p>
+        <p><strong>Email:</strong> contacto@nuchao.gw</p>
+        <p><strong>Localiza&#231;&#227;o:</strong> Bissau, Guin&#233;-Bissau</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <h2>Seu carrinho</h2>
+      <button class="icon-button" id="cartClose" aria-label="Fechar carrinho">&#10005;</button>
+    </div>
+    <div class="cart-body" id="cartItems">
+      <p class="cart-empty">O seu carrinho est&#225; vazio.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong id="cartTotal">0 CFA</strong>
+      </div>
+      <button class="btn primary full-width" id="checkoutButton">Finalizar pedido</button>
+      <small class="cart-note">Depois de finalizar, vamos entrar em contacto pelo WhatsApp para confirmar a encomenda.</small>
+    </div>
+  </aside>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="checkout-modal" id="checkoutModal" aria-hidden="true">
+    <div class="checkout-modal-inner">
+      <h2>Dados para envio</h2>
+      <p class="checkout-desc">Preencha para registar o pedido e abrir o WhatsApp.</p>
+      <form id="checkoutForm">
+        <label>Nome completo <input type="text" id="checkoutName" required /></label>
+        <label>Telefone (WhatsApp) <input type="tel" id="checkoutPhone" required placeholder="+245 900 000 000" /></label>
+        <label>Email <input type="email" id="checkoutEmail" /></label>
+        <label>Morada de entrega <textarea id="checkoutAddress" rows="2" required></textarea></label>
+        <div class="checkout-actions">
+          <button type="submit" class="btn primary">Confirmar e abrir WhatsApp</button>
+          <button type="button" class="btn ghost" id="checkoutModalClose">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&#169; <span id="year"></span> Nu Chao. Todos os direitos reservados.</p>
+      <p class="footer-note">Desenvolvido com amor na Guin&#233;-Bissau.</p>
+    </div>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

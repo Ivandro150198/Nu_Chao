@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Ambiente e segredos
+.env
+.env.local
+.env.*.local
+
+# Sistema e IDE
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build / cache (se usar ferramentas no futuro)
+dist/
+build/
+.cache/
