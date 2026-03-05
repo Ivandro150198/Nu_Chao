@@ -39,6 +39,12 @@
   function getAudit() { return window.LojaDB ? window.LojaDB.getAudit() : []; }
   function appendAudit(entry) { if (window.LojaDB) window.LojaDB.appendAudit(entry); }
 
+  function getContact() { return window.LojaDB ? window.LojaDB.getContact() : {}; }
+  function saveContact(obj) { if (window.LojaDB) window.LojaDB.saveContact(obj); }
+
+  function getAbout() { return window.LojaDB ? window.LojaDB.getAbout() : {}; }
+  function saveAbout(obj) { if (window.LojaDB) window.LojaDB.saveAbout(obj); }
+
   function nextId(arr) {
     var max = 0;
     (arr || []).forEach(function (item) { if (item.id && item.id > max) max = item.id; });
@@ -68,6 +74,7 @@
       if (tab === "clientes") renderCustomers();
       if (tab === "marketing") { renderCoupons(); renderNewsletter(); }
       if (tab === "relatorios") renderDashboard();
+      if (tab === "contacto-sobre") { loadContactForm(); loadAboutForm(); }
       if (tab === "config") { loadConfigIntoForm(); renderUsers(); renderAuditLog(); }
     });
   });
@@ -96,6 +103,39 @@
   var productInStock = document.getElementById("productInStock");
   var productSave = document.getElementById("productSave");
   var productCancel = document.getElementById("productCancel");
+  var productImageFile = document.getElementById("productImageFile");
+  var productImagePreview = document.getElementById("productImagePreview");
+  var productGalleryFiles = document.getElementById("productGalleryFiles");
+  var productGalleryPreviews = document.getElementById("productGalleryPreviews");
+
+  var productImageDataUrl = null;
+  var productGalleryDataUrls = [];
+
+  var productModalBackdrop = document.getElementById("productModalBackdrop");
+  var productModal = document.getElementById("productModal");
+  var productOpenModalBtn = document.getElementById("productOpenModal");
+  var productModalCloseBtn = document.getElementById("productModalClose");
+
+  function openProductModal() {
+    if (productModal) productModal.setAttribute("aria-hidden", "false");
+    if (productModalBackdrop) productModalBackdrop.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeProductModal() {
+    if (productModal) productModal.setAttribute("aria-hidden", "true");
+    if (productModalBackdrop) productModalBackdrop.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    clearProductForm();
+  }
+
+  if (productOpenModalBtn) productOpenModalBtn.addEventListener("click", function () {
+    clearProductForm();
+    openProductModal();
+  });
+
+  if (productModalCloseBtn) productModalCloseBtn.addEventListener("click", closeProductModal);
+  if (productModalBackdrop) productModalBackdrop.addEventListener("click", closeProductModal);
 
   function clearProductForm() {
     productId.value = "";
@@ -114,6 +154,55 @@
     productImage.value = "";
     productGallery.value = "";
     productInStock.checked = true;
+    productImageDataUrl = null;
+    productGalleryDataUrls = [];
+    if (productImageFile) productImageFile.value = "";
+    if (productGalleryFiles) productGalleryFiles.value = "";
+    if (productImagePreview) productImagePreview.innerHTML = "";
+    if (productGalleryPreviews) productGalleryPreviews.innerHTML = "";
+  }
+
+  function readFileAsDataUrl(file, done) {
+    var r = new FileReader();
+    r.onload = function () { done(r.result); };
+    r.readAsDataURL(file);
+  }
+
+  if (productImageFile) {
+    productImageFile.addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      productImageDataUrl = null;
+      readFileAsDataUrl(f, function (dataUrl) {
+        productImageDataUrl = dataUrl;
+        productImage.value = "";
+        if (productImagePreview) {
+          productImagePreview.innerHTML = "<img src=\"" + dataUrl.replace(/"/g, "&quot;") + "\" alt=\"Preview\" style=\"max-width:120px;max-height:120px;border-radius:8px;margin-top:6px;\" />";
+        }
+      });
+    });
+  }
+
+  if (productGalleryFiles) {
+    productGalleryFiles.addEventListener("change", function () {
+      var files = this.files;
+      if (!files || !files.length) return;
+      productGalleryDataUrls = [];
+      var done = 0;
+      for (var i = 0; i < files.length; i++) {
+        (function (idx) {
+          readFileAsDataUrl(files[idx], function (dataUrl) {
+            productGalleryDataUrls.push(dataUrl);
+            done++;
+            if (done === files.length && productGalleryPreviews) {
+              productGalleryPreviews.innerHTML = productGalleryDataUrls.map(function (url, j) {
+                return "<img src=\"" + url.replace(/"/g, "&quot;") + "\" alt=\"\" style=\"max-width:60px;max-height:60px;border-radius:6px;margin:4px;vertical-align:middle;\" />";
+              }).join("");
+            }
+          });
+        })(i);
+      }
+    });
   }
 
   function renderProductsTable() {
@@ -147,9 +236,31 @@
         productSizes.value = Array.isArray(p.sizes) ? p.sizes.join(", ") : "";
         productTag.value = p.tag || "";
         productSkus.value = Array.isArray(p.skus) ? p.skus.join("\n") : "";
-        productImage.value = p.image || "";
-        productGallery.value = Array.isArray(p.gallery) ? p.gallery.join("\n") : "";
+        productImageDataUrl = null;
+        productGalleryDataUrls = [];
+        if (productImageFile) productImageFile.value = "";
+        if (productGalleryFiles) productGalleryFiles.value = "";
+        if (p.image && p.image.indexOf("data:") === 0) {
+          productImage.value = "";
+          productImageDataUrl = p.image;
+          if (productImagePreview) productImagePreview.innerHTML = "<img src=\"" + p.image.replace(/"/g, "&quot;") + "\" alt=\"Preview\" style=\"max-width:120px;max-height:120px;border-radius:8px;margin-top:6px;\" />";
+        } else {
+          productImage.value = p.image || "";
+          if (productImagePreview) productImagePreview.innerHTML = "";
+        }
+        if (Array.isArray(p.gallery) && p.gallery.length && p.gallery[0] && p.gallery[0].indexOf("data:") === 0) {
+          productGalleryDataUrls = p.gallery.slice();
+          productGallery.value = "";
+          if (productGalleryPreviews) productGalleryPreviews.innerHTML = productGalleryDataUrls.map(function (url) {
+            return "<img src=\"" + url.replace(/"/g, "&quot;") + "\" alt=\"\" style=\"max-width:60px;max-height:60px;border-radius:6px;margin:4px;vertical-align:middle;\" />";
+          }).join("");
+        } else {
+          productGallery.value = Array.isArray(p.gallery) ? p.gallery.join("\n") : "";
+          productGalleryDataUrls = [];
+          if (productGalleryPreviews) productGalleryPreviews.innerHTML = "";
+        }
         productInStock.checked = p.inStock !== false;
+      openProductModal();
       });
     });
 
@@ -160,7 +271,7 @@
         saveProducts(getProducts().filter(function (x) { return x.id !== id; }));
         appendAudit({ user: currentUser(), action: "Produto apagado", detail: "ID " + id });
         renderProductsTable();
-        clearProductForm();
+        closeProductModal();
       });
     });
   }
@@ -175,22 +286,22 @@
     var sizes = sizesStr ? sizesStr.split(",").map(function (s) { return s.trim(); }).filter(Boolean) : ["Único"];
     var skuStr = productSkus.value.trim();
     var skus = skuStr ? skuStr.split("\n").map(function (s) { return s.trim(); }).filter(Boolean) : [];
-    var galleryStr = productGallery.value.trim();
-    var gallery = galleryStr ? galleryStr.split("\n").map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    var mainImg = productImageDataUrl || (productImage && productImage.value.trim()) || null;
+    var gallery = productGalleryDataUrls.length ? productGalleryDataUrls.slice() : (productGallery.value.trim() ? productGallery.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean) : []);
     var item = {
       id: id, name: name, category: productCategory.value || "feminino", collection: productCollection.value.trim() || null, productType: productType.value || "casual",
       description: productDescription.value.trim() || "", composition: productComposition.value.trim() || null, sizeGuide: productSizeGuide.value.trim() || null,
       price: price, location: productLocation.value.trim() || "Bissau", sizes: sizes, tag: productTag.value || null, skus: skus,
-      image: productImage.value.trim() || null, gallery: gallery, inStock: productInStock.checked, stockQty: undefined
+      image: mainImg, gallery: gallery, inStock: productInStock.checked, stockQty: undefined
     };
     var idx = list.findIndex(function (x) { return x.id === id; });
     if (idx >= 0) list[idx] = item; else list.push(item);
     saveProducts(list);
     appendAudit({ user: currentUser(), action: "Produto guardado", detail: name });
     renderProductsTable();
-    clearProductForm();
+    closeProductModal();
   });
-  if (productCancel) productCancel.addEventListener("click", clearProductForm);
+  if (productCancel) productCancel.addEventListener("click", closeProductModal);
 
   // ——— Heróis ———
   var heroesList = document.getElementById("heroesList");
@@ -349,6 +460,7 @@
   var customerPhone = document.getElementById("customerPhone");
   var customerEmail = document.getElementById("customerEmail");
   var customerAddress = document.getElementById("customerAddress");
+  var customerPassword = document.getElementById("customerPassword");
   var customerSave = document.getElementById("customerSave");
 
   function renderCustomers() {
@@ -394,13 +506,16 @@
     var name = (customerName && customerName.value.trim()) || "";
     var phone = (customerPhone && customerPhone.value.trim()) || "";
     if (!name || !phone) { alert("Preencha nome e telefone."); return; }
-    addCustomer({ name: name, phone: phone, email: (customerEmail && customerEmail.value.trim()) || "", address: (customerAddress && customerAddress.value.trim()) || "" });
+    var password = (customerPassword && customerPassword.value.trim()) || "";
+    if (password && password.length < 6) { alert("A palavra-passe deve ter pelo menos 6 caracteres."); return; }
+    addCustomer({ name: name, phone: phone, email: (customerEmail && customerEmail.value.trim()) || "", address: (customerAddress && customerAddress.value.trim()) || "", password: password });
     appendAudit({ user: currentUser(), action: "Cliente cadastrado", detail: name });
     renderCustomers();
     if (customerName) customerName.value = "";
     if (customerPhone) customerPhone.value = "";
     if (customerEmail) customerEmail.value = "";
     if (customerAddress) customerAddress.value = "";
+    if (customerPassword) customerPassword.value = "";
   });
 
   // ——— MARKETING: Cupons ———
@@ -565,6 +680,72 @@
     if (userLogin) userLogin.value = "";
     if (userPassword) userPassword.value = "";
     renderUsers();
+  });
+
+  // ——— CONTACTO E SOBRE ———
+  var contactPhone = document.getElementById("contactPhone");
+  var contactEmail = document.getElementById("contactEmail");
+  var contactAddress = document.getElementById("contactAddress");
+  var contactHours = document.getElementById("contactHours");
+  var contactExtra = document.getElementById("contactExtra");
+  var contactSave = document.getElementById("contactSave");
+  var aboutTitle = document.getElementById("aboutTitle");
+  var aboutText = document.getElementById("aboutText");
+  var aboutImageFile = document.getElementById("aboutImageFile");
+  var aboutImagePreview = document.getElementById("aboutImagePreview");
+  var aboutSave = document.getElementById("aboutSave");
+
+  var aboutImageDataUrl = null;
+
+  function loadContactForm() {
+    var c = getContact();
+    if (contactPhone) contactPhone.value = c.phone || "";
+    if (contactEmail) contactEmail.value = c.email || "";
+    if (contactAddress) contactAddress.value = c.address || "";
+    if (contactHours) contactHours.value = c.hours || "";
+    if (contactExtra) contactExtra.value = c.extra || "";
+  }
+
+  function loadAboutForm() {
+    var a = getAbout();
+    if (aboutTitle) aboutTitle.value = a.title || "";
+    if (aboutText) aboutText.value = a.text || "";
+    aboutImageDataUrl = a.image || null;
+    if (aboutImageFile) aboutImageFile.value = "";
+    if (aboutImagePreview) aboutImagePreview.innerHTML = a.image ? "<img src=\"" + a.image.replace(/"/g, "&quot;") + "\" alt=\"Preview\" style=\"max-width:160px;max-height:120px;border-radius:8px;margin-top:6px;\" />" : "";
+  }
+
+  if (contactSave) contactSave.addEventListener("click", function () {
+    saveContact({
+      phone: contactPhone ? contactPhone.value.trim() : "",
+      email: contactEmail ? contactEmail.value.trim() : "",
+      address: contactAddress ? contactAddress.value.trim() : "",
+      hours: contactHours ? contactHours.value.trim() : "",
+      extra: contactExtra ? contactExtra.value.trim() : ""
+    });
+    appendAudit({ user: currentUser(), action: "Contacto atualizado", detail: "" });
+    alert("Contacto guardado.");
+  });
+
+  if (aboutImageFile) {
+    aboutImageFile.addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      readFileAsDataUrl(f, function (dataUrl) {
+        aboutImageDataUrl = dataUrl;
+        if (aboutImagePreview) aboutImagePreview.innerHTML = "<img src=\"" + dataUrl.replace(/"/g, "&quot;") + "\" alt=\"Preview\" style=\"max-width:160px;max-height:120px;border-radius:8px;margin-top:6px;\" />";
+      });
+    });
+  }
+
+  if (aboutSave) aboutSave.addEventListener("click", function () {
+    saveAbout({
+      title: aboutTitle ? aboutTitle.value.trim() : "",
+      text: aboutText ? aboutText.value.trim() : "",
+      image: aboutImageDataUrl || (getAbout().image) || null
+    });
+    appendAudit({ user: currentUser(), action: "Sobre atualizado", detail: aboutTitle ? aboutTitle.value.trim() : "" });
+    alert("Sobre guardado.");
   });
 
   // ——— CONFIG: Audit log ———

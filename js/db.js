@@ -27,7 +27,9 @@
       newsletter: [],
       settings: {},
       users: [],
-      audit: []
+      audit: [],
+      contact: {},
+      about: {}
     };
   }
 
@@ -60,7 +62,9 @@
         newsletter: [],
         settings: {},
         users: [],
-        audit: []
+        audit: [],
+        contact: {},
+        about: {}
       };
       saveDB(data);
       return data;
@@ -181,6 +185,27 @@
       var db = getDB();
       return Array.isArray(db.audit) ? db.audit : [];
     },
+
+    getContact: function () {
+      var db = getDB();
+      return db.contact && typeof db.contact === "object" ? db.contact : {};
+    },
+    saveContact: function (obj) {
+      var db = getDB();
+      db.contact = obj && typeof obj === "object" ? obj : {};
+      saveDB(db);
+    },
+
+    getAbout: function () {
+      var db = getDB();
+      return db.about && typeof db.about === "object" ? db.about : {};
+    },
+    saveAbout: function (obj) {
+      var db = getDB();
+      db.about = obj && typeof obj === "object" ? obj : {};
+      saveDB(db);
+    },
+
     appendAudit: function (entry) {
       var db = getDB();
       var list = Array.isArray(db.audit) ? db.audit : [];

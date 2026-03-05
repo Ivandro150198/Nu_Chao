@@ -27,8 +27,8 @@
       <h1>Entrar</h1>
       <p>Faça login para finalizar compras e aceder à área administrativa.</p>
       <form class="login-form" id="loginForm">
-        <label for="user">Utilizador</label>
-        <input type="text" id="user" name="user" autocomplete="username" required placeholder="admin">
+        <label for="user">Email, telefone ou utilizador admin</label>
+        <input type="text" id="user" name="user" autocomplete="username" required placeholder="email, telefone ou admin">
         <label for="password">Palavra-passe</label>
         <input type="password" id="password" name="password" autocomplete="current-password" required placeholder="••••••••">
         <button type="submit">Entrar</button>
@@ -40,6 +40,7 @@
       </div>
     </div>
   </div>
+  <script src="js/db.js"></script>
   <script src="js/auth.js"></script>
   <script>
     (function () {

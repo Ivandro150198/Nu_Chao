@@ -616,13 +616,62 @@ function updateAuthNav() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Aplica as defini\u00e7\u00f5es do admin (SEO) na p\u00e1gina.
+ * Afeta t\u00edtulo e meta descri\u00e7\u00e3o em todos os dispositivos, incluindo mobile.
+ */
+function applyDefinicoes() {
+  if (!window.LojaDB || !window.LojaDB.getSettings) return;
+  var s = window.LojaDB.getSettings();
+  if (s.seoTitle && String(s.seoTitle).trim()) {
+    document.title = String(s.seoTitle).trim();
+  }
+  var metaDesc = document.getElementById("metaDescription") || document.querySelector('meta[name="description"]');
+  if (metaDesc && s.seoDescription && String(s.seoDescription).trim()) {
+    metaDesc.setAttribute("content", String(s.seoDescription).trim());
+  }
+}
+
+function renderAboutAndContact() {
+  var aboutEl = document.getElementById("aboutContent");
+  var contactEl = document.getElementById("contactContent");
+  if (window.LojaDB && window.LojaDB.getAbout) {
+    var a = window.LojaDB.getAbout();
+    if (aboutEl && (a.title || a.text || a.image)) {
+      var imgHtml = a.image ? "<div class=\"about-image-wrap\"><img src=\"" + String(a.image).replace(/"/g, "&quot;") + "\" alt=\"\" class=\"about-image\" /></div>" : "";
+      var textHtml = "<div class=\"about-text\">";
+      if (a.title) textHtml += "<h3>" + String(a.title).replace(/</g, "&lt;") + "</h3>";
+      if (a.text) {
+        var paras = String(a.text).split(/\n/).filter(Boolean);
+        textHtml += paras.map(function (p) { return "<p>" + p.replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</p>"; }).join("");
+      }
+      textHtml += "</div>";
+      aboutEl.innerHTML = imgHtml + textHtml;
+    }
+  }
+  if (window.LojaDB && window.LojaDB.getContact) {
+    var c = window.LojaDB.getContact();
+    if (contactEl && (c.phone || c.email || c.address || c.extra || c.hours)) {
+      var html = "<h3>Contacto</h3>";
+      if (c.extra) html += "<p>" + String(c.extra).replace(/\n/g, "</p><p>").replace(/</g, "&lt;") + "</p>";
+      if (c.phone) html += "<p><strong>WhatsApp:</strong> " + String(c.phone).replace(/</g, "&lt;") + "</p>";
+      if (c.email) html += "<p><strong>Email:</strong> " + String(c.email).replace(/</g, "&lt;") + "</p>";
+      if (c.address) html += "<p><strong>Localiza\u00e7\u00e3o:</strong> " + String(c.address).replace(/</g, "&lt;") + "</p>";
+      if (c.hours) html += "<p><strong>Hor\u00e1rio:</strong> " + String(c.hours).replace(/</g, "&lt;") + "</p>";
+      contactEl.innerHTML = html;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
   loadCart();
   updateAuthNav();
+  applyDefinicoes();
   buildHeroCarousel();
-  priceLabel.textContent = `At\u00e9 ${Number(priceFilter.value).toLocaleString("pt-PT")} CFA`;
+  priceLabel.textContent = "At\u00e9 " + Number(priceFilter.value).toLocaleString("pt-PT") + " CFA";
   renderProducts();
   renderCart();
+  renderAboutAndContact();
   initHeroCarousel();
 });
 

@@ -31,8 +31,20 @@ function login(emailOrUser, password) {
   const u = (emailOrUser || "").trim().toLowerCase();
   const p = (password || "").trim();
   if (u === DEFAULT_USER && p === DEFAULT_PASS) {
-    setSession({ name: "Admin", login: u });
+    setSession({ name: "Admin", login: u, role: "admin" });
     return true;
+  }
+  if (typeof window.LojaDB !== "undefined" && window.LojaDB.getCustomers) {
+    const customers = window.LojaDB.getCustomers();
+    const customer = customers.find(function (c) {
+      const byEmail = (c.email || "").trim().toLowerCase() === u;
+      const byPhone = (c.phone || "").trim() === (emailOrUser || "").trim();
+      return (byEmail || byPhone) && (c.password || "") === p;
+    });
+    if (customer) {
+      setSession({ name: customer.name, login: customer.email || customer.phone, role: "customer" });
+      return true;
+    }
   }
   return false;
 }

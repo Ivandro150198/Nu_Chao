@@ -76,6 +76,103 @@
   display: block;
 }
 
+/* Modal: cadastro de produto */
+.admin-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(27, 94, 32, 0.4);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.admin-modal-backdrop[aria-hidden="false"] {
+  display: block;
+}
+
+.admin-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.admin-modal[aria-hidden="false"] {
+  display: flex;
+  pointer-events: auto;
+}
+
+.admin-modal-inner {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(46, 125, 50, 0.25);
+  border: 1px solid rgba(46, 125, 50, 0.25);
+  pointer-events: auto;
+}
+
+.admin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(46, 125, 50, 0.2);
+  background: rgba(232, 245, 233, 0.5);
+  border-radius: 16px 16px 0 0;
+}
+
+.admin-modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+  color: var(--text, #1b5e20);
+}
+
+.admin-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(46, 125, 50, 0.35);
+  background: #fff;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.admin-modal-close:hover {
+  background: var(--bg-soft);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.admin-modal-body {
+  padding: 20px;
+}
+
+.admin-modal-body .admin-desc {
+  margin-bottom: 12px;
+}
+
+.admin-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
 .admin-section {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
@@ -87,6 +184,10 @@
 .admin-section h2 {
   font-size: 18px;
   margin-bottom: 6px;
+}
+
+#productOpenModal {
+  margin-bottom: 14px;
 }
 
 .admin-desc {
@@ -127,6 +228,22 @@
   display: grid;
   gap: 12px;
   margin-top: 16px;
+}
+
+.product-image-preview,
+.product-gallery-previews {
+  min-height: 0;
+  margin-top: 4px;
+}
+
+.product-image-preview img,
+.product-gallery-previews img {
+  display: block;
+  object-fit: cover;
+}
+
+.product-gallery-previews img {
+  display: inline-block;
 }
 
 .admin-form label {
@@ -274,7 +391,87 @@
 }
 
 @media (max-width: 720px) {
+  .admin-wrap {
+    padding: 16px 12px;
+  }
+
+  .admin-modal {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .admin-modal-inner {
+    max-height: 90vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .admin-modal-header {
+    padding: 14px 16px;
+  }
+
+  .admin-modal-body {
+    padding: 16px;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 12px;
+  }
+
+  .admin-header h1 {
+    font-size: 18px;
+  }
+
+  .admin-tabs {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .admin-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .admin-section {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .admin-section h2 {
+    font-size: 16px;
+  }
+
   .admin-form .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .admin-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-table {
+    min-width: 480px;
+    font-size: 12px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 8px 6px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card {
+    padding: 14px;
+  }
+
+  .hero-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }

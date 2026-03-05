@@ -26,14 +26,16 @@
       <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="clientes">Clientes</button>
       <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="marketing">Marketing</button>
       <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="relatorios">Relat&#243;rios</button>
+      <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="contacto-sobre">Contacto e Sobre</button>
       <button type="button" class="admin-tab" role="tab" aria-selected="false" data-tab="config">Configura&#231;&#245;es</button>
     </nav>
 
     <!-- CATÁLOGO -->
     <section class="admin-panel active" id="panel-catalogo">
       <div class="admin-section">
-        <h2>Produtos</h2>
-        <p class="admin-desc">Cadastro com descri&#231;&#227;o t&#233;cnica, composi&#231;&#227;o, cole&#231;&#227;o e varia&#231;&#245;es (SKU).</p>
+        <h2>Lista de produtos</h2>
+        <p class="admin-desc">Todos os produtos da loja.</p>
+        <button type="button" class="btn-add" id="productOpenModal">Adicionar produto</button>
         <table class="admin-table" id="productsTable">
           <thead>
             <tr>
@@ -47,58 +49,79 @@
           </thead>
           <tbody id="productsBody"></tbody>
         </table>
-        <div class="admin-form" id="productForm">
-          <h3>Adicionar / editar produto</h3>
-          <input type="hidden" id="productId" />
-          <div class="form-row">
-            <label>T&#237;tulo <input type="text" id="productName" required /></label>
-            <label>Categoria
-              <select id="productCategory">
-                <option value="feminino">Feminino</option>
-                <option value="masculino">Masculino</option>
-                <option value="unissex">Unissex</option>
-                <option value="acessorios">Acess&#243;rios</option>
-              </select>
-            </label>
+      </div>
+
+      <!-- Modal: Cadastro de produto -->
+      <div class="admin-modal-backdrop" id="productModalBackdrop" aria-hidden="true"></div>
+      <div class="admin-modal" id="productModal" role="dialog" aria-labelledby="productModalTitle" aria-modal="true" aria-hidden="true">
+        <div class="admin-modal-inner">
+          <div class="admin-modal-header">
+            <h2 id="productModalTitle">Cadastro de produto</h2>
+            <button type="button" class="admin-modal-close" id="productModalClose" aria-label="Fechar">&#10005;</button>
           </div>
-          <div class="form-row">
-            <label>Cole&#231;&#227;o <input type="text" id="productCollection" placeholder="Ver&#227;o, Inverno, etc." /></label>
-            <label>Tipo <select id="productType">
-              <option value="casual">Casual</option>
-              <option value="formal">Formal</option>
-              <option value="festivo">Festivo</option>
-            </select></label>
-          </div>
-          <label>Descri&#231;&#227;o t&#233;cnica <textarea id="productDescription" rows="2"></textarea></label>
-          <label>Composi&#231;&#227;o do tecido <input type="text" id="productComposition" placeholder="ex: 100% algod&#227;o" /></label>
-          <label>Guia de tamanhos (texto) <textarea id="productSizeGuide" rows="2" placeholder="S=34-36, M=38-40..."></textarea></label>
-          <div class="form-row">
-            <label>Pre&#231;o (CFA) <input type="number" id="productPrice" min="0" required /></label>
-            <label>Local <input type="text" id="productLocation" placeholder="Bissau" /></label>
-          </div>
-          <div class="form-row">
-            <label>Tamanhos (v&#237;rgula) <input type="text" id="productSizes" placeholder="S, M, L" /></label>
-            <label>Etiqueta <select id="productTag">
-              <option value="">Nenhuma</option>
-              <option value="new">Novo</option>
-              <option value="bestseller">Mais vendido</option>
-            </select></label>
-          </div>
-          <label>Varia&#231;&#245;es / SKU (uma por linha: ex. Camiseta Azul - G) <textarea id="productSkus" rows="3" placeholder="Camiseta Azul - S&#10;Camiseta Azul - M"></textarea></label>
-          <label>URL imagem principal <input type="text" id="productImage" placeholder="assets/prod-1.jpg" /></label>
-          <label>Galeria (URLs, uma por linha) <textarea id="productGallery" rows="2" placeholder="assets/prod-1.jpg"></textarea></label>
-          <label><input type="checkbox" id="productInStock" checked /> Em stock</label>
-          <div>
-            <button type="button" class="btn-add" id="productSave">Guardar</button>
-            <button type="button" class="btn-sm" id="productCancel">Cancelar</button>
+          <div class="admin-modal-body">
+            <p class="admin-desc">Adicione ou edite produtos. Pode carregar imagens do dispositivo.</p>
+            <div class="admin-form" id="productForm">
+              <input type="hidden" id="productId" />
+              <div class="form-row">
+                <label>T&#237;tulo <input type="text" id="productName" required /></label>
+                <label>Categoria
+                  <select id="productCategory">
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="unissex">Unissex</option>
+                    <option value="acessorios">Acess&#243;rios</option>
+                  </select>
+                </label>
+              </div>
+              <div class="form-row">
+                <label>Cole&#231;&#227;o <input type="text" id="productCollection" placeholder="Ver&#227;o, Inverno, etc." /></label>
+                <label>Tipo <select id="productType">
+                  <option value="casual">Casual</option>
+                  <option value="formal">Formal</option>
+                  <option value="festivo">Festivo</option>
+                </select></label>
+              </div>
+              <label>Descri&#231;&#227;o t&#233;cnica <textarea id="productDescription" rows="2"></textarea></label>
+              <label>Composi&#231;&#227;o do tecido <input type="text" id="productComposition" placeholder="ex: 100% algod&#227;o" /></label>
+              <label>Guia de tamanhos (texto) <textarea id="productSizeGuide" rows="2" placeholder="S=34-36, M=38-40..."></textarea></label>
+              <div class="form-row">
+                <label>Pre&#231;o (CFA) <input type="number" id="productPrice" min="0" required /></label>
+                <label>Local <input type="text" id="productLocation" placeholder="Bissau" /></label>
+              </div>
+              <div class="form-row">
+                <label>Tamanhos (v&#237;rgula) <input type="text" id="productSizes" placeholder="S, M, L" /></label>
+                <label>Etiqueta <select id="productTag">
+                  <option value="">Nenhuma</option>
+                  <option value="new">Novo</option>
+                  <option value="bestseller">Mais vendido</option>
+                </select></label>
+              </div>
+              <label>Varia&#231;&#245;es / SKU (uma por linha) <textarea id="productSkus" rows="3" placeholder="Camiseta Azul - S"></textarea></label>
+              <label>Imagem principal: carregar do dispositivo <input type="file" id="productImageFile" accept="image/*" /></label>
+              <div class="product-image-preview" id="productImagePreview"></div>
+              <label>Ou URL da imagem <input type="text" id="productImage" placeholder="assets/prod-1.jpg" /></label>
+              <label>Galeria: carregar v&#225;rias imagens <input type="file" id="productGalleryFiles" accept="image/*" multiple /></label>
+              <div class="product-gallery-previews" id="productGalleryPreviews"></div>
+              <label>Ou URLs da galeria (uma por linha) <textarea id="productGallery" rows="2" placeholder="assets/prod-1.jpg"></textarea></label>
+              <label><input type="checkbox" id="productInStock" checked /> Em stock</label>
+              <div class="admin-modal-actions">
+                <button type="button" class="btn-add" id="productSave">Guardar produto</button>
+                <button type="button" class="btn-sm" id="productCancel">Cancelar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="admin-section">
         <h2>Slides do hero (carrossel)</h2>
+        <p class="admin-desc">Lista de slides da p&#225;gina inicial.</p>
         <div id="heroesList"></div>
+      </div>
+      <div class="admin-section">
+        <h2>Cadastro de slide do hero</h2>
+        <p class="admin-desc">Adicione ou edite um slide do carrossel.</p>
         <div class="admin-form" id="heroForm">
-          <h3>Adicionar / editar slide</h3>
           <input type="hidden" id="heroId" />
           <label>URL imagem de fundo <input type="text" id="heroImage" placeholder="assets/hero-banner.png" /></label>
           <label>T&#237;tulo <input type="text" id="heroTitle" /></label>
@@ -185,6 +208,7 @@
             <label>Email <input type="email" id="customerEmail" placeholder="email@exemplo.com" /></label>
             <label>Morada <input type="text" id="customerAddress" placeholder="Bissau, bairro..." /></label>
           </div>
+          <label>Palavra-passe do cliente (para login na loja) <input type="password" id="customerPassword" placeholder="Mín. 6 caracteres" minlength="6" autocomplete="new-password" /></label>
           <div>
             <button type="button" class="btn-add" id="customerSave">Guardar cliente</button>
           </div>
@@ -267,6 +291,35 @@
         </table>
         <h3 class="admin-h3">Produtos em alerta (estoque baixo)</h3>
         <ul id="lowStockList" class="admin-list"></ul>
+      </div>
+    </section>
+
+    <!-- CONTACTO E SOBRE -->
+    <section class="admin-panel" id="panel-contacto-sobre">
+      <div class="admin-section">
+        <h2>Contacto</h2>
+        <p class="admin-desc">Informa&#231;&#245;es exibidas na sec&#231;&#227;o Contacto da loja.</p>
+        <div class="admin-form" id="contactForm">
+          <div class="form-row">
+            <label>Telefone / WhatsApp <input type="text" id="contactPhone" placeholder="+245 900 000 000" /></label>
+            <label>Email <input type="email" id="contactEmail" placeholder="contacto@nuchao.gw" /></label>
+          </div>
+          <label>Morada <input type="text" id="contactAddress" placeholder="Bissau, Guin&#233;-Bissau" /></label>
+          <label>Hor&#225;rio (opcional) <input type="text" id="contactHours" placeholder="Seg-Sex 9h-18h" /></label>
+          <label>Texto adicional <textarea id="contactExtra" rows="2" placeholder="Tem d&#250;vidas? Fale connosco."></textarea></label>
+          <button type="button" class="btn-add" id="contactSave">Guardar contacto</button>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h2>Sobre</h2>
+        <p class="admin-desc">Conte&#250;do da sec&#231;&#227;o Sobre a Nu Chao na loja.</p>
+        <div class="admin-form" id="aboutForm">
+          <label>T&#237;tulo <input type="text" id="aboutTitle" placeholder="Sobre a Nu Chao" /></label>
+          <label>Texto <textarea id="aboutText" rows="5" placeholder="Somos uma marca de moda..."></textarea></label>
+          <label>Imagem (opcional): carregar do dispositivo <input type="file" id="aboutImageFile" accept="image/*" /></label>
+          <div class="product-image-preview" id="aboutImagePreview"></div>
+          <button type="button" class="btn-add" id="aboutSave">Guardar Sobre</button>
+        </div>
       </div>
     </section>
 

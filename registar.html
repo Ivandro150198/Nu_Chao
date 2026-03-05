@@ -37,6 +37,10 @@
         <input type="email" id="regEmail" name="email" placeholder="email@exemplo.com">
         <label for="regAddress">Morada</label>
         <textarea id="regAddress" name="address" placeholder="Bairro, cidade..."></textarea>
+        <label for="regPassword">Palavra-passe</label>
+        <input type="password" id="regPassword" name="password" minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+        <label for="regPasswordConfirm">Confirmar palavra-passe</label>
+        <input type="password" id="regPasswordConfirm" name="password_confirm" autocomplete="new-password" placeholder="Repita a palavra-passe">
         <button type="submit">Registar</button>
         <p class="register-success" id="registerSuccess" role="status" style="display:none;">Conta criada com sucesso. Pode voltar à loja.</p>
         <p class="register-error" id="registerError" role="alert" style="display:none;"></p>
@@ -55,6 +59,8 @@
         var phone = document.getElementById("regPhone").value.trim();
         var email = document.getElementById("regEmail").value.trim();
         var address = document.getElementById("regAddress").value.trim();
+        var password = document.getElementById("regPassword") ? document.getElementById("regPassword").value : "";
+        var passwordConfirm = document.getElementById("regPasswordConfirm") ? document.getElementById("regPasswordConfirm").value : "";
         var errEl = document.getElementById("registerError");
         var okEl = document.getElementById("registerSuccess");
         errEl.style.display = "none";
@@ -64,8 +70,18 @@
           errEl.style.display = "block";
           return;
         }
+        if (!password || password.length < 6) {
+          errEl.textContent = "A palavra-passe deve ter pelo menos 6 caracteres.";
+          errEl.style.display = "block";
+          return;
+        }
+        if (password !== passwordConfirm) {
+          errEl.textContent = "As palavras-passe não coincidem.";
+          errEl.style.display = "block";
+          return;
+        }
         if (window.LojaDB && window.LojaDB.addCustomer) {
-          window.LojaDB.addCustomer({ name: name, phone: phone, email: email, address: address });
+          window.LojaDB.addCustomer({ name: name, phone: phone, email: email, address: address, password: password });
           okEl.style.display = "block";
           document.getElementById("registerForm").reset();
           setTimeout(function () { window.location.href = "index.html"; }, 1500);
