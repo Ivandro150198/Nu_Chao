@@ -1,21 +1,11 @@
-# Dependências
-node_modules/
-
-# Ambiente e segredos
+# Nu Chao
 .env
-.env.local
-.env.*.local
-
-# Sistema e IDE
-.DS_Store
-Thumbs.db
 *.log
-.idea/
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/.htaccess
 .vscode/
-*.swp
-*.swo
-
-# Build / cache (se usar ferramentas no futuro)
-dist/
-build/
-.cache/
+target/
+*.class
+config/google.local.php
+config/install.lock

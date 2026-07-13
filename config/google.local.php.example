@@ -1,0 +1,8 @@
+<?php
+/**
+ * Copie para google.local.php e preencha as credenciais.
+ * Este ficheiro NÃO deve ser commitado com segredos reais.
+ */
+define('GOOGLE_CLIENT_ID', 'COLE_AQUI_CLIENT_ID.apps.googleusercontent.com');
+define('GOOGLE_CLIENT_SECRET', 'COLE_AQUI_CLIENT_SECRET');
+define('GOOGLE_REDIRECT_URI', 'http://localhost/No_chao/auth/google_callback.php');

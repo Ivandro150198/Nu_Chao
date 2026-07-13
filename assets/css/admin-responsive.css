@@ -1,0 +1,164 @@
+/**
+ * Admin / painel — responsivo alinhado à loja
+ */
+
+@media (max-width: 960px) {
+  .painel-mobile-bar {
+    display: flex !important;
+  }
+
+  .painel-body {
+    padding-bottom: calc(4.85rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .painel-topbar .user-chip,
+  .painel-topbar .hide-sm {
+    display: none !important;
+  }
+
+  .painel-shell,
+  .admin-container {
+    width: min(100%, calc(100% - 1.25rem));
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-stats,
+  .painel-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-nav,
+  .painel-nav {
+    gap: 0.35rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
+@media (min-width: 961px) {
+  .painel-mobile-bar {
+    display: none !important;
+  }
+
+  .painel-body {
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-page-head,
+  .painel-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .admin-scroll {
+    margin-inline: -0.15rem;
+  }
+
+  .admin-scroll .admin-table,
+  .admin-table {
+    min-width: 0 !important;
+    table-layout: auto;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tbody {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .admin-table tr {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .admin-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.2rem 0;
+    border: 0;
+    width: auto !important;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .admin-table .col-produto,
+  .admin-table td.col-produto {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-table .col-produto::before,
+  .admin-table td:first-child::before {
+    display: none;
+  }
+
+  .admin-table .col-acoes,
+  .admin-table td.col-acoes {
+    justify-content: flex-end;
+  }
+
+  .admin-table .col-acoes::before {
+    display: none;
+  }
+
+  .acoes-cell {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .acoes-cell .btn {
+    min-height: 44px;
+  }
+
+  .produto-cell {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-stats,
+  .painel-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .painel-mobile-bar a {
+    font-size: 0.65rem;
+    min-height: 52px;
+  }
+
+  .admin-cms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-card,
+  .admin-list-card .list-head {
+    padding: 0.9rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .admin-container,
+  .painel-shell {
+    width: min(1320px, calc(100% - 2rem));
+  }
+}

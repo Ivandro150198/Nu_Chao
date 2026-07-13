@@ -1,0 +1,42 @@
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# Bloquear ficheiros sensíveis
+<FilesMatch "(?i)\.(env|sql|log|bak|md)$">
+  Require all denied
+</FilesMatch>
+
+<FilesMatch "(?i)^(composer\.(json|lock)|package(-lock)?\.json)$">
+  Require all denied
+</FilesMatch>
+
+# URLs antigas → pastas novas (auth / loja / conta)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /No_chao/
+
+  # Acções POST: rewrite interno (sem redirect, para não perder o método)
+  RewriteRule ^logout\.php$ auth/logout.php [L,QSA]
+  RewriteRule ^carrinho_acao\.php$ loja/carrinho_acao.php [L,QSA]
+  RewriteRule ^google_callback\.php$ auth/google_callback.php [L,QSA]
+
+  # Páginas: redirect permanente
+  RewriteRule ^login\.php$ auth/login.php [L,QSA,R=301]
+  RewriteRule ^registar\.php$ auth/registar.php [L,QSA,R=301]
+  RewriteRule ^google_auth\.php$ auth/google_auth.php [L,QSA,R=301]
+  RewriteRule ^produto\.php$ loja/produto.php [L,QSA,R=301]
+  RewriteRule ^carrinho\.php$ loja/carrinho.php [L,QSA,R=301]
+  RewriteRule ^checkout\.php$ loja/checkout.php [L,QSA,R=301]
+  RewriteRule ^contacto\.php$ loja/contacto.php [L,QSA,R=301]
+  RewriteRule ^sobre\.php$ loja/sobre.php [L,QSA,R=301]
+  RewriteRule ^perfil\.php$ conta/perfil.php [L,QSA,R=301]
+  RewriteRule ^meus_pedidos\.php$ conta/meus_pedidos.php [L,QSA,R=301]
+  RewriteRule ^pedido\.php$ conta/pedido.php [L,QSA,R=301]
+  RewriteRule ^pedido_enviado\.php$ conta/pedido_enviado.php [L,QSA,R=301]
+</IfModule>

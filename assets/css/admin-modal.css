@@ -1,0 +1,47 @@
+/**
+ * Modais de cadastro (admin + loja)
+ */
+.modal-root.admin-modal .modal-dialog {
+  width: min(640px, 100%);
+}
+.modal-root.admin-modal .modal-dialog.modal-lg {
+  width: min(760px, 100%);
+}
+.modal-preview {
+  margin-top: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-height: 160px;
+  background: var(--bg);
+}
+.modal-preview img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+.admin-page-head .head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.hero-thumb {
+  width: 56px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.hero-thumb-ph {
+  width: 56px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+}
