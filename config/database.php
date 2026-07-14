@@ -1,18 +1,25 @@
 <?php
 declare(strict_types=1);
 
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'nu_chao');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+define('DB_NAME', getenv('DB_NAME') ?: 'nu_chao');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') !== false ? (string) getenv('DB_PASS') : '');
 define('DB_CHARSET', 'utf8mb4');
 
 define('APP_NAME', 'Nu Chao');
 define('APP_CURRENCY', 'XOF');
 /** Número WhatsApp da loja (com código do país, sem + ou espaços). Ex: Guiné-Bissau = 245... */
-define('APP_WHATSAPP', '245955000000');
+define('APP_WHATSAPP', getenv('APP_WHATSAPP') ?: '245955000000');
 define('BASE_PATH', dirname(__DIR__));
-define('APP_BASE_URL', '/No_chao');
+
+if (getenv('APP_BASE_URL') !== false) {
+    define('APP_BASE_URL', rtrim((string) getenv('APP_BASE_URL'), '/'));
+} elseif (getenv('VERCEL')) {
+    define('APP_BASE_URL', '');
+} else {
+    define('APP_BASE_URL', '/No_chao');
+}
 
 require_once __DIR__ . '/google.php';
 

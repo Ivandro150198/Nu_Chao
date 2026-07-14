@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (produto_remover_imagem($iid, $pid)) {
             flash('info', 'Imagem removida.');
         }
-        redirect('/No_chao/admin/produtos.php?edit=' . $pid);
+        redirect(url('admin/produtos.php?edit=') . $pid);
     }
 
     if ($acao === 'definir_capa') {
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (produto_definir_capa($iid, $pid)) {
             flash('success', 'Imagem principal actualizada.');
         }
-        redirect('/No_chao/admin/produtos.php?edit=' . $pid);
+        redirect(url('admin/produtos.php?edit=') . $pid);
     }
 
     if ($acao === 'salvar') {
@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $added = produto_add_imagens($id, $uploads['ok']);
                 if ($added < count($uploads['ok'])) {
                     flash('info', 'Produto guardado. Algumas imagens não foram adicionadas (máx. ' . produto_max_imagens() . ').');
-                    redirect('/No_chao/admin/produtos.php?edit=' . $id);
+                    redirect(url('admin/produtos.php?edit=') . $id);
                 }
             }
             flash('success', 'Produto actualizado.');
-            redirect('/No_chao/admin/produtos.php');
+            redirect(url('admin/produtos.php'));
         } elseif ($error === '') {
             $stmt = $pdo->prepare(
                 'INSERT INTO produtos (nome, descricao, categoria, preco, preco_promocional, em_promocao, stock, stock_alerta, tamanhos, imagem, ativo) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 produto_add_imagens($id, $uploads['ok']);
             }
             flash('success', 'Produto criado.');
-            redirect('/No_chao/admin/produtos.php');
+            redirect(url('admin/produtos.php'));
         }
 
         if ($error !== '') {
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('UPDATE produtos SET ativo = 0 WHERE id = ?')->execute([$id]);
         flash('info', 'Produto desactivado.');
-        redirect('/No_chao/admin/produtos.php');
+        redirect(url('admin/produtos.php'));
     }
 }
 
@@ -221,7 +221,7 @@ admin_header('Produtos', 'produtos');
               </td>
               <td class="col-acoes" data-label="Acções">
                 <div class="acoes-cell">
-                  <a class="btn ghost sm" href="/No_chao/loja/produto.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener">Ver</a>
+                  <a class="btn ghost sm" href="<?= url('loja/produto.php?id=' . (int) $p['id']) ?>" target="_blank" rel="noopener">Ver</a>
                   <a class="btn ghost sm" href="?edit=<?= (int)$p['id'] ?>">Editar</a>
                   <?php if (!empty($p['ativo'])): ?>
                     <form method="post" onsubmit="return confirm('Desactivar este produto?')">

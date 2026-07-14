@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt->execute([$titulo, $mensagem, $tipo, $desconto, $cupom, $produtoId, $inicio, $fim, $activo, $id]);
             flash('success', 'Promoção actualizada.');
-            redirect('/No_chao/admin/promocoes.php');
+            redirect(url('admin/promocoes.php'));
         } else {
             $stmt = $pdo->prepare(
                 'INSERT INTO promocoes (titulo, mensagem, tipo, desconto_percent, codigo_cupom, produto_id, data_inicio, data_fim, activo)
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt->execute([$titulo, $mensagem, $tipo, $desconto, $cupom, $produtoId, $inicio, $fim, $activo]);
             flash('success', 'Promoção criada.');
-            redirect('/No_chao/admin/promocoes.php');
+            redirect(url('admin/promocoes.php'));
         }
     }
 
@@ -59,14 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('DELETE FROM promocoes WHERE id = ?')->execute([$id]);
         flash('info', 'Promoção removida.');
-        redirect('/No_chao/admin/promocoes.php');
+        redirect(url('admin/promocoes.php'));
     }
 
     if ($acao === 'toggle') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('UPDATE promocoes SET activo = 1 - activo WHERE id = ?')->execute([$id]);
         flash('success', 'Estado da promoção actualizado.');
-        redirect('/No_chao/admin/promocoes.php');
+        redirect(url('admin/promocoes.php'));
     }
 }
 

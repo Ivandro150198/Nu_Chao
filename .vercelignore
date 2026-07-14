@@ -1,0 +1,9 @@
+.env
+*.log
+.vscode/
+.git/
+.cursor/
+config/google.local.php
+config/install.lock
+assets/uploads/*
+!assets/uploads/.gitkeep

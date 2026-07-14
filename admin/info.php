@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         config_set($chave, $valor);
     }
     flash('success', 'Informações do site guardadas.');
-    redirect('/No_chao/admin/info.php');
+    redirect(url('admin/info.php'));
 }
 
 $cfg = [];
@@ -42,7 +42,7 @@ admin_header('Informações', 'info');
     <h2>Informações &amp; contacto</h2>
     <p>Dados que aparecem no cabeçalho, contacto, rodapé e WhatsApp.</p>
   </div>
-  <a class="btn ghost sm" href="/No_chao/admin/site.php">← Gestão do site</a>
+  <a class="btn ghost sm" href="<?= url('admin/site.php') ?>">← Gestão do site</a>
 </div>
 
 <form class="admin-form-card" method="post">
@@ -92,7 +92,7 @@ admin_header('Informações', 'info');
 
   <div class="admin-form-actions">
     <button class="btn primary" type="submit">Guardar informações</button>
-    <a class="btn ghost" href="/No_chao/loja/contacto.php" target="_blank" rel="noopener">Ver página contacto</a>
+    <a class="btn ghost" href="<?= url('loja/contacto.php') ?>" target="_blank" rel="noopener">Ver página contacto</a>
   </div>
 </form>
 

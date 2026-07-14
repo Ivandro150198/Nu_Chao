@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             flash('error', 'Preencha todos os campos (senha mín. 6).');
         }
-        redirect('/No_chao/admin/entregadores.php');
+        redirect(url('admin/entregadores.php'));
     }
 
     if ($acao === 'aprovar' && $id > 0) {
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "UPDATE usuarios SET aprovado = 1, ativo = 1 WHERE id = ? AND tipo = 'ENTREGADOR'"
         )->execute([$id]);
         flash('success', 'Entregador aprovado. Já pode entrar na área de entregas.');
-        redirect('/No_chao/admin/entregadores.php');
+        redirect(url('admin/entregadores.php'));
     }
 
     if ($acao === 'rejeitar' && $id > 0) {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "UPDATE usuarios SET aprovado = 0, ativo = 0 WHERE id = ? AND tipo = 'ENTREGADOR'"
         )->execute([$id]);
         flash('info', 'Pedido de entregador rejeitado.');
-        redirect('/No_chao/admin/entregadores.php');
+        redirect(url('admin/entregadores.php'));
     }
 
     if ($acao === 'toggle' && $id > 0) {
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "UPDATE usuarios SET ativo = IF(ativo=1,0,1) WHERE id = ? AND tipo = 'ENTREGADOR' AND aprovado = 1"
         )->execute([$id]);
         flash('info', 'Estado do entregador actualizado.');
-        redirect('/No_chao/admin/entregadores.php');
+        redirect(url('admin/entregadores.php'));
     }
 }
 

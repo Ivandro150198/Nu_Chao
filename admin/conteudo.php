@@ -59,7 +59,7 @@ foreach ($grupos as $chaves) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     config_save_many($todas, $_POST);
     flash('success', 'Conteúdos do site guardados.');
-    redirect('/No_chao/admin/conteudo.php');
+    redirect(url('admin/conteudo.php'));
 }
 
 admin_header('Conteúdos', 'conteudo');
@@ -70,7 +70,7 @@ admin_header('Conteúdos', 'conteudo');
     <h2>Conteúdos &amp; textos</h2>
     <p>Textos exibidos na página inicial e na página Sobre.</p>
   </div>
-  <a class="btn ghost sm" href="/No_chao/admin/site.php">← Gestão do site</a>
+  <a class="btn ghost sm" href="<?= url('admin/site.php') ?>">← Gestão do site</a>
 </div>
 
 <form method="post">
@@ -98,7 +98,7 @@ admin_header('Conteúdos', 'conteudo');
 
   <div class="admin-form-actions" style="margin-bottom:2rem">
     <button class="btn primary" type="submit">Guardar conteúdos</button>
-    <a class="btn ghost" href="/No_chao/loja/sobre.php" target="_blank" rel="noopener">Ver Sobre</a>
+    <a class="btn ghost" href="<?= url('loja/sobre.php') ?>" target="_blank" rel="noopener">Ver Sobre</a>
   </div>
 </form>
 

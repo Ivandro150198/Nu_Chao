@@ -6,7 +6,7 @@ require_once __DIR__ . '/../includes/icons.php';
 $user = require_login();
 if (!in_array($user['tipo'], ['CLIENTE', 'ADMIN'], true)) {
     flash('error', 'Área disponível para clientes.');
-    redirect('/No_chao/index.php');
+    redirect(url('index.php'));
 }
 
 $pdo = db();
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'cancela
     } else {
         flash('error', 'Este pedido já não pode ser cancelado.');
     }
-    redirect('/No_chao/conta/meus_pedidos.php');
+    redirect(url('conta/meus_pedidos.php'));
 }
 
 $filtro = (string) ($_GET['status'] ?? '');
@@ -112,7 +112,7 @@ require __DIR__ . '/../includes/header.php';
     <?php if (!$pedidos): ?>
       <div class="empty">
         <p><?= icon('package', 'icon inline') ?> Nenhum pedido encontrado.</p>
-        <p><a class="btn primary" href="/No_chao/index.php#produtos"><?= icon('shirt', 'icon') ?> Ver produtos</a></p>
+        <p><a class="btn primary" href="<?= url('index.php#produtos') ?>"><?= icon('shirt', 'icon') ?> Ver produtos</a></p>
       </div>
     <?php else: ?>
       <div class="orders-list">
@@ -170,7 +170,7 @@ require __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="order-card-actions">
-              <a class="btn primary sm" href="/No_chao/conta/pedido.php?id=<?= (int) $p['id'] ?>">
+              <a class="btn primary sm" href="<?= url('conta/pedido.php?id=' . (int) $p['id']) ?>">
                 <?= icon('package', 'icon sm') ?> Acompanhar
               </a>
               <?php if (cliente_pode_cancelar($p)): ?>

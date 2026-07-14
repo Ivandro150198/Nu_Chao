@@ -7,12 +7,17 @@ if (!defined('NU_CHAO_SECURE_BOOT')) {
     define('NU_CHAO_SECURE_BOOT', true);
 
     $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || ((int) ($_SERVER['SERVER_PORT'] ?? 0) === 443);
+        || ((int) ($_SERVER['SERVER_PORT'] ?? 0) === 443)
+        || (getenv('VERCEL') !== false);
 
     if (session_status() === PHP_SESSION_NONE) {
+        if (getenv('VERCEL') !== false) {
+            ini_set('session.save_path', '/tmp');
+        }
+        $cookiePath = APP_BASE_URL === '' ? '/' : APP_BASE_URL;
         session_set_cookie_params([
             'lifetime' => 0,
-            'path' => '/No_chao',
+            'path' => $cookiePath,
             'secure' => $https,
             'httponly' => true,
             'samesite' => 'Lax',
@@ -37,6 +42,24 @@ if (!defined('NU_CHAO_SECURE_BOOT')) {
 function e(?string $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * URL relativa à base da app (ex.: /No_chao local, '' no Vercel).
+ */
+function url(string $path = ''): string
+{
+    $base = APP_BASE_URL;
+    if ($path === '' || $path === '/') {
+        return $base === '' ? '/' : $base . '/';
+    }
+    $path = ltrim($path, '/');
+    return ($base === '' ? '' : $base) . '/' . $path;
+}
+
+function app_base_prefix(): string
+{
+    return APP_BASE_URL === '' ? '/' : APP_BASE_URL . '/';
 }
 
 function money(float|int|string $amount): string
@@ -104,15 +127,19 @@ function csrf_require(): void
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_valid()) {
         http_response_code(403);
+        $apiPrefix = app_base_prefix() . 'api/';
         if (str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json')
             || str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')
-            || str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', '/No_chao/api/')) {
+            || str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', $apiPrefix)) {
             json_response(['ok' => false, 'error' => 'Pedido inválido (CSRF). Recarregue a página.'], 403);
         }
         flash('error', 'Pedido inválido. Recarregue a página e tente novamente.');
-        $ref = $_SERVER['HTTP_REFERER'] ?? '/No_chao/index.php';
-        if (!str_starts_with($ref, 'http') || !str_contains($ref, '/No_chao/')) {
-            $ref = '/No_chao/index.php';
+        $ref = $_SERVER['HTTP_REFERER'] ?? url('index.php');
+        $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
+        $sameHost = $host !== '' && (str_contains($ref, '://' . $host . '/') || str_ends_with($ref, '://' . $host));
+        $baseOk = APP_BASE_URL === '' || str_contains($ref, APP_BASE_URL . '/');
+        if (!str_starts_with($ref, 'http') || !$sameHost || !$baseOk) {
+            $ref = url('index.php');
         }
         redirect($ref);
     }
@@ -162,7 +189,8 @@ function logout_user(): void
     $_SESSION = [];
     if (ini_get('session.use_cookies')) {
         $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000, $params['path'] ?? '/No_chao', $params['domain'] ?? '', (bool) ($params['secure'] ?? false), (bool) ($params['httponly'] ?? true));
+        $fallbackPath = APP_BASE_URL === '' ? '/' : APP_BASE_URL;
+        setcookie(session_name(), '', time() - 42000, $params['path'] ?? $fallbackPath, $params['domain'] ?? '', (bool) ($params['secure'] ?? false), (bool) ($params['httponly'] ?? true));
     }
     if (session_status() === PHP_SESSION_ACTIVE) {
         session_destroy();
@@ -174,11 +202,11 @@ function require_login(?string $tipo = null): array
     $user = current_user();
     if (!$user) {
         flash('error', 'Faça login para continuar.');
-        redirect('/No_chao/auth/login.php');
+        redirect(url('auth/login.php'));
     }
     if ($tipo && $user['tipo'] !== $tipo) {
         flash('error', 'Não tem permissão para aceder a esta área.');
-        redirect('/No_chao/index.php');
+        redirect(url('index.php'));
     }
     return $user;
 }

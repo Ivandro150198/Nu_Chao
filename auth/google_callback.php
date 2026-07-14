@@ -3,17 +3,17 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/functions.php';
 
 if (current_user()) {
-    redirect('/No_chao/index.php');
+    redirect(url('index.php'));
 }
 
 if (!google_configurado()) {
     flash('error', 'Login Google não configurado.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 if (!empty($_GET['error'])) {
     flash('error', 'Autenticação Google cancelada.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 $state = (string) ($_GET['state'] ?? '');
@@ -26,7 +26,7 @@ unset($_SESSION['google_oauth_state'], $_SESSION['google_oauth_modo'], $_SESSION
 
 if ($code === '' || $state === '' || !hash_equals($expected, $state)) {
     flash('error', 'Sessão Google inválida. Tente novamente.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 try {
@@ -35,7 +35,7 @@ try {
 } catch (Throwable $e) {
     error_log('Google OAuth: ' . $e->getMessage());
     flash('error', 'Não foi possível autenticar com o Google. Tente novamente.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 $googleId = (string) $perfil['sub'];
@@ -61,7 +61,7 @@ if (!$user) {
         // Conta com palavra-passe: não associar Google automaticamente (evita takeover)
         if (!empty($user['senha_hash'])) {
             flash('error', 'Já existe uma conta com este email. Entre com a palavra-passe e associe o Google no perfil, ou use outro email Google.');
-            redirect('/No_chao/auth/login.php');
+            redirect(url('auth/login.php'));
         }
         $pdo->prepare('UPDATE usuarios SET google_id = ? WHERE id = ? AND (google_id IS NULL OR google_id = "")')
             ->execute([$googleId, $user['id']]);
@@ -72,18 +72,18 @@ if (!$user) {
 if ($user) {
     if (empty($user['ativo'])) {
         flash('error', 'Esta conta está desactivada. Contacte o administrador.');
-        redirect('/No_chao/auth/login.php');
+        redirect(url('auth/login.php'));
     }
     if ($user['tipo'] === 'ENTREGADOR' && empty($user['aprovado'])) {
         flash('error', 'A sua conta de entregador ainda aguarda aprovação do administrador.');
-        redirect('/No_chao/auth/login.php');
+        redirect(url('auth/login.php'));
     }
 
     login_user($user);
     flash('success', 'Bem-vindo(a), ' . $user['nome'] . '!');
-    if ($user['tipo'] === 'ADMIN') redirect('/No_chao/admin/');
-    if ($user['tipo'] === 'ENTREGADOR') redirect('/No_chao/entregador/');
-    redirect('/No_chao/index.php');
+    if ($user['tipo'] === 'ADMIN') redirect(url('admin/'));
+    if ($user['tipo'] === 'ENTREGADOR') redirect(url('entregador/'));
+    redirect(url('index.php'));
 }
 
 // 3) Conta nova — criar conforme tipo escolhido no registo (ou cliente no login)
@@ -107,7 +107,7 @@ $id = (int) $pdo->lastInsertId();
 
 if ($tipo === 'ENTREGADOR') {
     flash('info', 'Conta Google de entregador criada. Aguarde a aprovação do administrador para entrar.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 login_user([
@@ -118,4 +118,4 @@ login_user([
     'tipo' => 'CLIENTE',
 ]);
 flash('success', 'Conta criada com Google. Já pode fazer compras.');
-redirect('/No_chao/index.php');
+redirect(url('index.php'));

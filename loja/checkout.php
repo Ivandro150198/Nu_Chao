@@ -5,13 +5,13 @@ require_once __DIR__ . '/../includes/functions.php';
 $user = require_login();
 if ($user['tipo'] !== 'CLIENTE' && $user['tipo'] !== 'ADMIN') {
     flash('error', 'Apenas clientes podem fazer pedidos nesta área.');
-    redirect('/No_chao/index.php');
+    redirect(url('index.php'));
 }
 
 $items = cart();
 if (!$items) {
     flash('error', 'O carrinho está vazio.');
-    redirect('/No_chao/loja/carrinho.php');
+    redirect(url('loja/carrinho.php'));
 }
 
 $zonas = db()->query('SELECT * FROM zonas_entrega WHERE ativa = 1 ORDER BY nome')->fetchAll();
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'url' => whatsapp_url($mensagem),
             ];
             flash('success', "Pedido {$codigo} criado! A abrir o WhatsApp para enviar o pedido…");
-            redirect('/No_chao/conta/pedido_enviado.php');
+            redirect(url('conta/pedido_enviado.php'));
         } catch (Throwable $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();

@@ -18,7 +18,7 @@ require __DIR__ . '/../includes/header.php';
     <?php if (!$items): ?>
       <div class="empty">
         <p>O carrinho está vazio.</p>
-        <p><a class="btn primary" href="/No_chao/index.php#produtos">Ver produtos</a></p>
+        <p><a class="btn primary" href="<?= url('index.php#produtos') ?>">Ver produtos</a></p>
       </div>
     <?php else: ?>
       <div class="cart-layout">
@@ -42,7 +42,7 @@ require __DIR__ . '/../includes/header.php';
                   </td>
                   <td data-label="Tamanho"><?= e($item['tamanho']) ?></td>
                   <td data-label="Quantidade">
-                    <form method="post" action="/No_chao/loja/carrinho_acao.php" class="qty-control">
+                    <form method="post" action="<?= url('loja/carrinho_acao.php') ?>" class="qty-control">
                       <?= csrf_field() ?>
                       <input type="hidden" name="acao" value="update">
                       <input type="hidden" name="key" value="<?= e($key) ?>">
@@ -53,7 +53,7 @@ require __DIR__ . '/../includes/header.php';
                   </td>
                   <td data-label="Subtotal"><?= money($item['preco'] * $item['quantidade']) ?></td>
                   <td data-label="">
-                    <form method="post" action="/No_chao/loja/carrinho_acao.php">
+                    <form method="post" action="<?= url('loja/carrinho_acao.php') ?>">
                       <?= csrf_field() ?>
                       <input type="hidden" name="acao" value="remove">
                       <input type="hidden" name="key" value="<?= e($key) ?>">
@@ -72,7 +72,7 @@ require __DIR__ . '/../includes/header.php';
           <div class="summary-line"><span>Entrega</span><span>Calculada no checkout</span></div>
           <div class="summary-line total"><span>Subtotal</span><span><?= money($total) ?></span></div>
           <p class="muted" style="font-size:0.9rem">Pagamento apenas na entrega (dinheiro, Orange Money ou mobile money).</p>
-          <a class="btn primary block" href="/No_chao/loja/checkout.php">Finalizar pedido</a>
+          <a class="btn primary block" href="<?= url('loja/checkout.php') ?>">Finalizar pedido</a>
         </aside>
       </div>
     <?php endif; ?>

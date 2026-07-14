@@ -46,14 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt->execute([$titulo, $texto, $nota ?: null, $cta, $href, $imagem, $ordem, $activo, $id]);
             flash('success', 'Slide actualizado.');
-            redirect('/No_chao/admin/hero.php');
+            redirect(url('admin/hero.php'));
         } elseif ($error === '') {
             $stmt = $pdo->prepare(
                 'INSERT INTO hero_slides (titulo, texto, nota, cta_texto, cta_href, imagem, ordem, activo) VALUES (?,?,?,?,?,?,?,?)'
             );
             $stmt->execute([$titulo, $texto, $nota ?: null, $cta, $href, $imagem, $ordem, $activo]);
             flash('success', 'Slide criado.');
-            redirect('/No_chao/admin/hero.php');
+            redirect(url('admin/hero.php'));
         }
 
         if ($error !== '') {
@@ -76,14 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('DELETE FROM hero_slides WHERE id = ?')->execute([$id]);
         flash('info', 'Slide removido.');
-        redirect('/No_chao/admin/hero.php');
+        redirect(url('admin/hero.php'));
     }
 
     if ($acao === 'toggle') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('UPDATE hero_slides SET activo = 1 - activo WHERE id = ?')->execute([$id]);
         flash('success', 'Estado do slide actualizado.');
-        redirect('/No_chao/admin/hero.php');
+        redirect(url('admin/hero.php'));
     }
 }
 
@@ -113,7 +113,7 @@ admin_header('Hero / Banner', 'hero');
     <p>Slides do carrossel no topo da loja. Ordem controla a sequência.</p>
   </div>
   <div class="head-actions">
-    <a class="btn ghost sm" href="/No_chao/admin/site.php">← Site</a>
+    <a class="btn ghost sm" href="<?= url('admin/site.php') ?>">← Site</a>
     <button type="button" class="btn primary sm" data-open-modal="modalHero">+ Novo slide</button>
   </div>
 </div>

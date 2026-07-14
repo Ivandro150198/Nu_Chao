@@ -16,7 +16,7 @@ csrf_require();
 
 // Honeypot anti-bot
 if (trim((string) ($_POST['website'] ?? '')) !== '') {
-    json_response(['ok' => true, 'redirect' => '/No_chao/index.php', 'message' => 'OK'], 200);
+    json_response(['ok' => true, 'redirect' => url('index.php'), 'message' => 'OK'], 200);
 }
 
 $ipKey = 'reg_' . client_ip();
@@ -73,7 +73,7 @@ try {
         json_response([
             'ok' => true,
             'tipo' => 'ENTREGADOR',
-            'redirect' => '/No_chao/auth/login.php',
+            'redirect' => url('auth/login.php'),
             'message' => 'Pedido enviado. Aguarde aprovação do administrador.',
         ]);
     }
@@ -89,7 +89,7 @@ try {
     json_response([
         'ok' => true,
         'tipo' => 'CLIENTE',
-        'redirect' => '/No_chao/index.php',
+        'redirect' => url('index.php'),
         'message' => 'Conta criada com sucesso.',
     ]);
 } catch (PDOException $e) {
