@@ -29,7 +29,7 @@ admin_header('Dashboard', 'dashboard');
     <h2>Dashboard</h2>
     <p>Centro de gestão da loja Nu Chao — conteúdo, produtos, pedidos e entregas.</p>
   </div>
-  <a class="btn primary sm" href="/No_chao/admin/site.php"><?= icon('package', 'icon sm') ?> Gestão do site</a>
+  <a class="btn primary sm" href="<?= url('admin/site.php') ?>"><?= icon('package', 'icon sm') ?> Gestão do site</a>
 </div>
 
 <div class="admin-stats painel-stats">
@@ -44,35 +44,35 @@ admin_header('Dashboard', 'dashboard');
 <?php if ($stats['stock_baixo'] > 0): ?>
   <div class="flash flash-info" style="margin-bottom:1rem">
     <?= $stats['stock_baixo'] ?> produto(s) com stock baixo.
-    <a href="/No_chao/admin/configuracoes.php">Ver alertas</a> ·
-    <a href="/No_chao/admin/produtos.php">Gerir stock</a>
+    <a href="<?= url('admin/configuracoes.php') ?>">Ver alertas</a> ·
+    <a href="<?= url('admin/produtos.php') ?>">Gerir stock</a>
   </div>
 <?php endif; ?>
 
 <?php if ($stats['entregadores_pendentes'] > 0): ?>
   <div class="flash flash-info" style="margin-bottom:1rem">
     Há <?= (int)$stats['entregadores_pendentes'] ?> pedido(s) de entregador à espera de aprovação.
-    <a href="/No_chao/admin/entregadores.php">Validar agora</a>
+    <a href="<?= url('admin/entregadores.php') ?>">Validar agora</a>
   </div>
 <?php endif; ?>
 
 <div class="admin-cms-grid" style="margin-bottom:1.25rem">
-  <a class="admin-cms-card" href="/No_chao/admin/site.php">
+  <a class="admin-cms-card" href="<?= url('admin/site.php') ?>">
     <span class="admin-cms-ico"><?= icon('package') ?></span>
     <strong>Gestão do site</strong>
     <span>Hero, textos, contacto e zonas</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/hero.php">
+  <a class="admin-cms-card" href="<?= url('admin/hero.php') ?>">
     <span class="admin-cms-ico"><?= icon('spark') ?></span>
     <strong>Hero</strong>
     <span>Banner da página inicial</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/produtos.php">
+  <a class="admin-cms-card" href="<?= url('admin/produtos.php') ?>">
     <span class="admin-cms-ico"><?= icon('shirt') ?></span>
     <strong>Produtos</strong>
     <span>Catálogo e stock</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/promocoes.php">
+  <a class="admin-cms-card" href="<?= url('admin/promocoes.php') ?>">
     <span class="admin-cms-ico"><?= icon('tag') ?></span>
     <strong>Promoções</strong>
     <span>Alertas e descontos</span>
@@ -82,7 +82,7 @@ admin_header('Dashboard', 'dashboard');
 <div class="admin-list-card" style="margin-top:1rem">
   <div class="list-head">
     <h3>Pedidos recentes</h3>
-    <a href="/No_chao/admin/pedidos.php">Ver todos</a>
+    <a href="<?= url('admin/pedidos.php') ?>">Ver todos</a>
   </div>
   <div class="admin-scroll">
     <table class="admin-table" style="min-width:700px;table-layout:auto">
@@ -99,7 +99,7 @@ admin_header('Dashboard', 'dashboard');
       <tbody>
         <?php foreach ($recentes as $p): ?>
           <tr>
-            <td><a href="/No_chao/admin/pedidos.php?id=<?= (int)$p['id'] ?>"><strong><?= e($p['codigo']) ?></strong></a></td>
+            <td><a href="<?= url('admin/pedidos.php?id=' . (int) $p['id']) ?>"><strong><?= e($p['codigo']) ?></strong></a></td>
             <td><?= e($p['cliente']) ?></td>
             <td><?= e($p['zona']) ?></td>
             <td><?= money($p['valor_total']) ?></td>

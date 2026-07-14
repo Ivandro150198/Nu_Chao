@@ -40,7 +40,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <?php if (!empty($dbError)): ?>
-  <div class="flash flash-error"><div class="container">Base de dados indisponível. Abra <a href="/No_chao/install.php">install.php</a>.</div></div>
+  <div class="flash flash-error"><div class="container">Base de dados indisponível. Abra <a href="<?= url('install.php') ?>">install.php</a>.</div></div>
 <?php endif; ?>
 
 <section class="hero-carousel" id="heroCarousel" aria-label="Destaques <?= e(site_nome()) ?>">
@@ -125,7 +125,7 @@ require __DIR__ . '/includes/header.php';
             $nImg = $imgCounts[(int) $p['id']] ?? ($capa ? 1 : 0);
           ?>
           <article class="product-card<?= $emPromo ? ' is-promo' : '' ?>" data-categoria="<?= e($p['categoria']) ?>" data-promo="<?= $emPromo ? '1' : '0' ?>">
-            <a class="product-media" href="/No_chao/loja/produto.php?id=<?= (int)$p['id'] ?>">
+            <a class="product-media" href="<?= url('loja/produto.php?id=' . (int) $p['id']) ?>">
               <?php if ($emPromo): ?>
                 <span class="badge badge-promo">−<?= produto_desconto_percent($p) ?>%</span>
               <?php endif; ?>
@@ -139,7 +139,7 @@ require __DIR__ . '/includes/header.php';
               <?php endif; ?>
             </a>
             <div class="product-body">
-              <h3><a href="/No_chao/loja/produto.php?id=<?= (int)$p['id'] ?>"><?= e($p['nome']) ?></a></h3>
+              <h3><a href="<?= url('loja/produto.php?id=' . (int) $p['id']) ?>"><?= e($p['nome']) ?></a></h3>
               <?php if ($mostrarPrecos): ?>
                 <div class="price-row">
                   <?php if ($emPromo): ?>
@@ -155,7 +155,7 @@ require __DIR__ . '/includes/header.php';
                   <?= $stock < 1 ? 'Esgotado' : 'Só ' . $stock . ' em stock' ?>
                 </div>
               <?php endif; ?>
-              <form class="product-actions" method="post" action="/No_chao/loja/carrinho_acao.php">
+              <form class="product-actions" method="post" action="<?= url('loja/carrinho_acao.php') ?>">
                 <input type="hidden" name="acao" value="add">
                 <input type="hidden" name="produto_id" value="<?= (int) $p['id'] ?>">
                 <select name="tamanho" aria-label="Tamanho">

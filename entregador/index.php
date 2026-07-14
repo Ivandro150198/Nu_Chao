@@ -11,7 +11,7 @@ $row = $chk->fetch();
 if (!$row || empty($row['ativo']) || empty($row['aprovado'])) {
     logout_user();
     flash('error', 'A sua conta de entregador ainda não está aprovada.');
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 $pdo = db();
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$pedido) {
         flash('error', 'Pedido não encontrado ou não atribuído a si.');
-        redirect('/No_chao/entregador/');
+        redirect(url('entregador/'));
     }
 
     if ($acao === 'iniciar' && in_array($pedido['status_pedido'], ['PENDENTE', 'CONFIRMADO'], true)) {
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('success', 'Entrega concluída e pagamento registado.');
     }
 
-    redirect('/No_chao/entregador/');
+    redirect(url('entregador/'));
 }
 
 $filtro = $_GET['tab'] ?? 'activas';
@@ -82,10 +82,11 @@ $flash = get_flash();
   <?= csrf_meta() ?>
   <meta name="theme-color" content="#0f2e1f" id="metaThemeColor">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/No_chao/assets/css/style.css">
-  <link rel="stylesheet" href="/No_chao/assets/css/painel.css">
-  <link rel="stylesheet" href="/No_chao/assets/css/responsive.css">
-  <link rel="stylesheet" href="/No_chao/assets/css/admin-responsive.css">
+  <link rel="stylesheet" href="<?= url('assets/css/style.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/painel.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/responsive.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/admin-responsive.css') ?>">
+  <script>window.APP_BASE_URL = <?= json_encode(APP_BASE_URL, JSON_UNESCAPED_SLASHES) ?>;</script>
   <script>
     (function () {
       try {
@@ -98,8 +99,8 @@ $flash = get_flash();
 <body class="painel-body">
 <header class="topbar painel-topbar">
   <div class="painel-shell topbar-inner">
-    <a class="brand" href="/No_chao/entregador/">
-      <img src="/No_chao/assets/logo-nc.png" alt="Nu Chao" class="brand-logo">
+    <a class="brand" href="<?= url('entregador/') ?>">
+      <img src="<?= url('assets/logo-nc.png') ?>" alt="Nu Chao" class="brand-logo">
       <span class="brand-text painel-brand-text">Deliver</span>
     </a>
     <div class="actions">
@@ -108,7 +109,7 @@ $flash = get_flash();
         <span class="theme-ico theme-ico-moon"><?= icon('moon') ?></span>
       </button>
       <span class="user-chip"><?= e($user['nome']) ?></span>
-      <a class="btn ghost sm hide-sm" href="/No_chao/auth/logout.php"><?= icon('logout', 'icon sm') ?> Sair</a>
+      <a class="btn ghost sm hide-sm" href="<?= url('auth/logout.php') ?>"><?= icon('logout', 'icon sm') ?> Sair</a>
     </div>
   </div>
 </header>
@@ -219,11 +220,11 @@ $flash = get_flash();
   <a href="tel:<?= e($user['telefone'] ?? '') ?>">
     <?= icon('phone') ?><span>Chamada</span>
   </a>
-  <a href="/No_chao/auth/logout.php">
+  <a href="<?= url('auth/logout.php') ?>">
     <?= icon('logout') ?><span>Sair</span>
   </a>
 </nav>
 
-<script src="/No_chao/assets/js/app.js"></script>
+<script src="<?= url('assets/js/app.js') ?>"></script>
 </body>
 </html>

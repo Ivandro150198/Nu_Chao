@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         config_set($chave, $valor);
     }
     flash('success', 'Definições do site guardadas.');
-    redirect('/No_chao/admin/configuracoes.php');
+    redirect(url('admin/configuracoes.php'));
 }
 
 $cfg = [];
@@ -53,7 +53,7 @@ admin_header('Definições', 'configuracoes');
     <h2>Definições do site</h2>
     <p>Controle stock visível, alertas de promoção, WhatsApp e estado da loja.</p>
   </div>
-  <a class="btn ghost sm" href="/No_chao/admin/site.php">← Gestão do site</a>
+  <a class="btn ghost sm" href="<?= url('admin/site.php') ?>">← Gestão do site</a>
 </div>
 
 <div class="admin-stack">
@@ -108,13 +108,13 @@ admin_header('Definições', 'configuracoes');
       <div class="form-group full">
         <label for="alerta_promocao_texto">Texto do alerta global</label>
         <input id="alerta_promocao_texto" name="alerta_promocao_texto" value="<?= e($cfg['alerta_promocao_texto']) ?>" placeholder="Ex: Frete especial em Bandim este fim de semana!">
-        <small class="muted">Além disto, as promoções activas em <a href="/No_chao/admin/promocoes.php">Promoções</a> também aparecem.</small>
+        <small class="muted">Além disto, as promoções activas em <a href="<?= url('admin/promocoes.php') ?>">Promoções</a> também aparecem.</small>
       </div>
     </div>
 
     <div class="admin-form-actions">
       <button class="btn primary" type="submit">Guardar definições</button>
-      <a class="btn ghost" href="/No_chao/admin/promocoes.php">Gerir promoções</a>
+      <a class="btn ghost" href="<?= url('admin/promocoes.php') ?>">Gerir promoções</a>
     </div>
   </form>
 
@@ -142,7 +142,7 @@ admin_header('Definições', 'configuracoes');
                 <td><?= e($p['nome']) ?></td>
                 <td><span class="stock-low"><?= (int)$p['stock'] ?></span></td>
                 <td>≤ <?= (int)$p['stock_alerta'] ?></td>
-                <td><a class="btn ghost sm" href="/No_chao/admin/produtos.php?edit=<?= (int)$p['id'] ?>">Editar</a></td>
+                <td><a class="btn ghost sm" href="<?= url('admin/produtos.php?edit=' . (int) $p['id']) ?>">Editar</a></td>
               </tr>
             <?php endforeach; ?>
           </tbody>

@@ -5,6 +5,7 @@ assets/uploads/*
 !assets/uploads/.gitkeep
 !assets/uploads/.htaccess
 .vscode/
+.vercel/
 target/
 *.class
 config/google.local.php

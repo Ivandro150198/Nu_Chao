@@ -13,7 +13,7 @@ if (ini_get('session.use_cookies')) {
         session_name(),
         '',
         time() - 42000,
-        $params['path'] ?? '/No_chao',
+        $params['path'] ?? (APP_BASE_URL === '' ? '/' : APP_BASE_URL),
         $params['domain'] ?? '',
         (bool) ($params['secure'] ?? false),
         (bool) ($params['httponly'] ?? true)
@@ -25,4 +25,4 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 flash('info', 'Sessão terminada.');
-redirect('/No_chao/index.php');
+redirect(url('index.php'));

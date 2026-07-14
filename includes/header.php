@@ -19,12 +19,13 @@ $userInitial = $user ? strtoupper(mb_substr($user['nome'], 0, 1)) : '';
   <?= csrf_meta() ?>
   <meta name="theme-color" content="#0f2e1f" id="metaThemeColor">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="icon" type="image/png" href="/No_chao/assets/logo-nc.png">
+  <link rel="icon" type="image/png" href="<?= url('assets/logo-nc.png') ?>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/No_chao/assets/css/style.css">
-  <link rel="stylesheet" href="/No_chao/assets/css/responsive.css">
+  <link rel="stylesheet" href="<?= url('assets/css/style.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/responsive.css') ?>">
+  <script>window.APP_BASE_URL = <?= json_encode(APP_BASE_URL, JSON_UNESCAPED_SLASHES) ?>;</script>
   <script>
     (function () {
       try {
@@ -37,32 +38,32 @@ $userInitial = $user ? strtoupper(mb_substr($user['nome'], 0, 1)) : '';
 <body>
 <header class="topbar">
   <div class="container topbar-inner">
-    <a class="brand" href="/No_chao/index.php">
-      <img src="/No_chao/assets/logo-nc.png" alt="<?= e(site_nome()) ?>" class="brand-logo">
+    <a class="brand" href="<?= url('index.php') ?>">
+      <img src="<?= url('assets/logo-nc.png') ?>" alt="<?= e(site_nome()) ?>" class="brand-logo">
       <span class="brand-text"><?= e(site_nome()) ?></span>
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Menu principal">
-      <a href="/No_chao/index.php#produtos"><?= icon('shirt', 'icon nav-ico') ?><span>Produtos</span></a>
-      <a href="/No_chao/loja/sobre.php"><?= icon('info', 'icon nav-ico') ?><span>Sobre</span></a>
-      <a href="/No_chao/loja/contacto.php"><?= icon('phone', 'icon nav-ico') ?><span>Contacto</span></a>
+      <a href="<?= url('index.php#produtos') ?>"><?= icon('shirt', 'icon nav-ico') ?><span>Produtos</span></a>
+      <a href="<?= url('loja/sobre.php') ?>"><?= icon('info', 'icon nav-ico') ?><span>Sobre</span></a>
+      <a href="<?= url('loja/contacto.php') ?>"><?= icon('phone', 'icon nav-ico') ?><span>Contacto</span></a>
       <?php if ($user && $user['tipo'] === 'ADMIN'): ?>
-        <a href="/No_chao/admin/site.php"><?= icon('package', 'icon nav-ico') ?><span>Gestão</span></a>
+        <a href="<?= url('admin/site.php') ?>"><?= icon('package', 'icon nav-ico') ?><span>Gestão</span></a>
       <?php elseif ($user && $user['tipo'] === 'ENTREGADOR'): ?>
-        <a href="/No_chao/entregador/"><?= icon('truck', 'icon nav-ico') ?><span>Entregas</span></a>
+        <a href="<?= url('entregador/') ?>"><?= icon('truck', 'icon nav-ico') ?><span>Entregas</span></a>
       <?php endif; ?>
       <?php if ($user): ?>
         <?php if (in_array($user['tipo'], ['CLIENTE', 'ADMIN'], true)): ?>
-          <a class="nav-auth-mobile" href="/No_chao/conta/meus_pedidos.php"><?= icon('bag', 'icon nav-ico') ?><span>Os meus pedidos</span></a>
+          <a class="nav-auth-mobile" href="<?= url('conta/meus_pedidos.php') ?>"><?= icon('bag', 'icon nav-ico') ?><span>Os meus pedidos</span></a>
         <?php endif; ?>
-        <a class="nav-auth-mobile" href="/No_chao/conta/perfil.php"><?= icon('user', 'icon nav-ico') ?><span>Perfil</span></a>
-        <form method="post" action="/No_chao/auth/logout.php" class="nav-auth-mobile-form">
+        <a class="nav-auth-mobile" href="<?= url('conta/perfil.php') ?>"><?= icon('user', 'icon nav-ico') ?><span>Perfil</span></a>
+        <form method="post" action="<?= url('auth/logout.php') ?>" class="nav-auth-mobile-form">
           <?= csrf_field() ?>
           <button type="submit" class="nav-auth-mobile-btn"><?= icon('logout', 'icon nav-ico') ?><span>Sair</span></button>
         </form>
       <?php else: ?>
-        <a class="nav-auth-mobile" href="/No_chao/auth/login.php"><?= icon('login', 'icon nav-ico') ?><span>Entrar</span></a>
-        <a class="nav-auth-mobile js-open-register" href="/No_chao/auth/registar.php"><?= icon('user', 'icon nav-ico') ?><span>Registar</span></a>
+        <a class="nav-auth-mobile" href="<?= url('auth/login.php') ?>"><?= icon('login', 'icon nav-ico') ?><span>Entrar</span></a>
+        <a class="nav-auth-mobile js-open-register" href="<?= url('auth/registar.php') ?>"><?= icon('user', 'icon nav-ico') ?><span>Registar</span></a>
       <?php endif; ?>
     </nav>
 
@@ -84,7 +85,7 @@ $userInitial = $user ? strtoupper(mb_substr($user['nome'], 0, 1)) : '';
               <span><?= e($user['email']) ?></span>
             </div>
             <?php if (in_array($user['tipo'], ['CLIENTE', 'ADMIN'], true)): ?>
-              <a role="menuitem" class="user-menu-primary" href="/No_chao/conta/meus_pedidos.php">
+              <a role="menuitem" class="user-menu-primary" href="<?= url('conta/meus_pedidos.php') ?>">
                 <?= icon('bag', 'icon sm') ?>
                 <span class="user-menu-label">
                   <strong>Os meus pedidos</strong>
@@ -92,24 +93,24 @@ $userInitial = $user ? strtoupper(mb_substr($user['nome'], 0, 1)) : '';
                 </span>
               </a>
             <?php endif; ?>
-            <a role="menuitem" href="/No_chao/conta/perfil.php"><?= icon('user', 'icon sm') ?> O meu perfil</a>
+            <a role="menuitem" href="<?= url('conta/perfil.php') ?>"><?= icon('user', 'icon sm') ?> O meu perfil</a>
             <?php if ($user['tipo'] === 'ADMIN'): ?>
-              <a role="menuitem" href="/No_chao/admin/site.php"><?= icon('package', 'icon sm') ?> Gestão</a>
+              <a role="menuitem" href="<?= url('admin/site.php') ?>"><?= icon('package', 'icon sm') ?> Gestão</a>
             <?php elseif ($user['tipo'] === 'ENTREGADOR'): ?>
-              <a role="menuitem" href="/No_chao/entregador/"><?= icon('truck', 'icon sm') ?> Entregas</a>
+              <a role="menuitem" href="<?= url('entregador/') ?>"><?= icon('truck', 'icon sm') ?> Entregas</a>
             <?php endif; ?>
-            <form method="post" action="/No_chao/auth/logout.php" role="none">
+            <form method="post" action="<?= url('auth/logout.php') ?>" role="none">
               <?= csrf_field() ?>
               <button role="menuitem" class="is-danger user-menu-btn-link" type="submit"><?= icon('logout', 'icon sm') ?> Sair</button>
             </form>
           </div>
         </div>
       <?php else: ?>
-        <a class="btn ghost sm desktop-only" href="/No_chao/auth/login.php"><?= icon('login', 'icon sm') ?> Entrar</a>
-        <a class="btn primary sm desktop-only js-open-register" href="/No_chao/auth/registar.php"><?= icon('user', 'icon sm') ?> Registar</a>
+        <a class="btn ghost sm desktop-only" href="<?= url('auth/login.php') ?>"><?= icon('login', 'icon sm') ?> Entrar</a>
+        <a class="btn primary sm desktop-only js-open-register" href="<?= url('auth/registar.php') ?>"><?= icon('user', 'icon sm') ?> Registar</a>
       <?php endif; ?>
 
-      <a class="cart-btn" href="/No_chao/loja/carrinho.php" aria-label="Carrinho">
+      <a class="cart-btn" href="<?= url('loja/carrinho.php') ?>" aria-label="Carrinho">
         <?= icon('cart', 'icon') ?>
         <span class="cart-label">Carrinho</span>
         <span class="cart-count"><?= (int) $cartCount ?></span>

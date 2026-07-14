@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirect('/No_chao/index.php');
+    redirect(url('index.php'));
 }
 
 csrf_require();
@@ -14,7 +14,7 @@ $cart = cart();
 if ($acao === 'add') {
     if (!config_bool('loja_aberta', true)) {
         flash('error', config_get('mensagem_loja_fechada', 'Loja temporariamente fechada.') ?? 'Loja temporariamente fechada.');
-        redirect('/No_chao/index.php#produtos');
+        redirect(url('index.php#produtos'));
     }
 
     $produtoId = (int) ($_POST['produto_id'] ?? 0);
@@ -29,14 +29,14 @@ if ($acao === 'add') {
 
     if (!$produto || (int) $produto['stock'] < 1) {
         flash('error', 'Produto indisponível.');
-        redirect('/No_chao/index.php#produtos');
+        redirect(url('index.php#produtos'));
     }
 
     $key = $produtoId . '|' . $tamanho;
     $qty = isset($cart[$key]) ? ((int) $cart[$key]['quantidade'] + 1) : 1;
     if ($qty > (int) $produto['stock']) {
         flash('error', 'Stock insuficiente para ' . $produto['nome'] . '.');
-        redirect('/No_chao/loja/carrinho.php');
+        redirect(url('loja/carrinho.php'));
     }
 
     if (isset($cart[$key])) {
@@ -55,10 +55,10 @@ if ($acao === 'add') {
     $_SESSION['cart'] = $cart;
     flash('success', 'Adicionado ao carrinho.');
     $redir = trim((string) ($_POST['redirect'] ?? ''));
-    if ($redir !== '' && str_starts_with($redir, '/No_chao/') && !str_contains($redir, '//') && !preg_match('/[\s<>"\']/', $redir)) {
+    if ($redir !== '' && str_starts_with($redir, app_base_prefix()) && !str_contains($redir, '//') && !preg_match('/[\s<>"\']/', $redir)) {
         redirect($redir);
     }
-    redirect('/No_chao/loja/carrinho.php');
+    redirect(url('loja/carrinho.php'));
 }
 
 if ($acao === 'update') {
@@ -73,14 +73,14 @@ if ($acao === 'update') {
             $produto = $stmt->fetch();
             if (!$produto || $qty > (int) $produto['stock']) {
                 flash('error', 'Stock insuficiente.');
-                redirect('/No_chao/loja/carrinho.php');
+                redirect(url('loja/carrinho.php'));
             }
             $cart[$key]['quantidade'] = $qty;
             $cart[$key]['preco'] = produto_preco_efectivo($produto);
         }
         $_SESSION['cart'] = $cart;
     }
-    redirect('/No_chao/loja/carrinho.php');
+    redirect(url('loja/carrinho.php'));
 }
 
 if ($acao === 'remove') {
@@ -88,13 +88,13 @@ if ($acao === 'remove') {
     unset($cart[$key]);
     $_SESSION['cart'] = $cart;
     flash('info', 'Item removido.');
-    redirect('/No_chao/loja/carrinho.php');
+    redirect(url('loja/carrinho.php'));
 }
 
 if ($acao === 'clear') {
     $_SESSION['cart'] = [];
     flash('info', 'Carrinho limpo.');
-    redirect('/No_chao/loja/carrinho.php');
+    redirect(url('loja/carrinho.php'));
 }
 
-redirect('/No_chao/index.php');
+redirect(url('index.php'));

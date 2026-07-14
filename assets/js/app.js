@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = document.documentElement;
+  const appBase = typeof window.APP_BASE_URL === 'string' ? window.APP_BASE_URL : '';
+  const appUrl = (path) => {
+    const p = String(path || '').replace(/^\//, '');
+    return (appBase || '') + '/' + p;
+  };
 
   // ——— CSRF: inject em todos os forms POST ———
   const csrfMeta = document.querySelector('meta[name="csrf-token"]');
@@ -290,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const openRegister = (e) => {
     if (e) e.preventDefault();
     if (!registerModal) {
-      window.location.href = '/No_chao/index.php?cadastro=1';
+      window.location.href = appUrl('index.php?cadastro=1');
       return;
     }
     closeNav();
@@ -347,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('googleRegistoBtn')?.addEventListener('click', (ev) => {
     ev.preventDefault();
     const tipo = registerModal?.querySelector('input[name="tipo"]:checked')?.value || 'CLIENTE';
-    window.location.href = '/No_chao/auth/google_auth.php?modo=registo&tipo=' + encodeURIComponent(tipo);
+    window.location.href = appUrl('auth/google_auth.php?modo=registo&tipo=' + encodeURIComponent(tipo));
   });
 
   registerForm?.addEventListener('submit', async (e) => {
@@ -361,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch('/No_chao/api/registar.php', {
+      const res = await fetch(appUrl('api/registar.php'), {
         method: 'POST',
         body: new FormData(registerForm),
         headers: { Accept: 'application/json' },
@@ -372,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         registerError.hidden = false;
         return;
       }
-      window.location.href = data.redirect || '/No_chao/index.php';
+      window.location.href = data.redirect || appUrl('index.php');
     } catch (err) {
       registerError.textContent = 'Erro de ligação. Tente novamente.';
       registerError.hidden = false;

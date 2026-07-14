@@ -16,7 +16,7 @@ $produto = $stmt->fetch();
 
 if (!$produto) {
     flash('error', 'Produto não encontrado.');
-    redirect('/No_chao/index.php#produtos');
+    redirect(url('index.php#produtos'));
 }
 
 $imagens = produto_imagens((int) $produto['id']);
@@ -45,7 +45,7 @@ require __DIR__ . '/../includes/header.php';
 <section class="section product-detail-page">
   <div class="container">
     <p class="breadcrumb">
-      <a href="/No_chao/index.php#produtos"><?= icon('chevron-left', 'icon sm') ?> Voltar aos produtos</a>
+      <a href="<?= url('index.php#produtos') ?>"><?= icon('chevron-left', 'icon sm') ?> Voltar aos produtos</a>
     </p>
 
     <div class="product-detail">
@@ -110,11 +110,11 @@ require __DIR__ . '/../includes/header.php';
           </div>
         <?php endif; ?>
 
-        <form class="product-detail-actions" method="post" action="/No_chao/loja/carrinho_acao.php">
+        <form class="product-detail-actions" method="post" action="<?= url('loja/carrinho_acao.php') ?>">
           <?= csrf_field() ?>
           <input type="hidden" name="acao" value="add">
           <input type="hidden" name="produto_id" value="<?= (int) $produto['id'] ?>">
-          <input type="hidden" name="redirect" value="/No_chao/loja/produto.php?id=<?= (int) $produto['id'] ?>">
+          <input type="hidden" name="redirect" value="<?= e(url('loja/produto.php?id=' . (int) $produto['id'])) ?>">
           <label for="tamanho">Tamanho</label>
           <div class="product-actions">
             <select id="tamanho" name="tamanho" aria-label="Tamanho">
