@@ -10,51 +10,51 @@ admin_header('Gestão do site', 'site');
     <h2>Gestão do site</h2>
     <p>Controle tudo o que aparece na loja: hero, textos, contacto, zonas, produtos e promoções.</p>
   </div>
-  <a class="btn ghost sm" href="/No_chao/index.php" target="_blank" rel="noopener">Ver loja</a>
+  <a class="btn ghost sm" href="<?= url('index.php') ?>" target="_blank" rel="noopener">Ver loja</a>
 </div>
 
 <div class="admin-cms-grid">
-  <a class="admin-cms-card" href="/No_chao/admin/hero.php">
+  <a class="admin-cms-card" href="<?= url('admin/hero.php') ?>">
     <span class="admin-cms-ico"><?= icon('spark') ?></span>
     <strong>Hero / Banner</strong>
     <span>Slides do topo da página inicial</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/conteudo.php">
+  <a class="admin-cms-card" href="<?= url('admin/conteudo.php') ?>">
     <span class="admin-cms-ico"><?= icon('info') ?></span>
     <strong>Conteúdos &amp; textos</strong>
     <span>Início, Sobre, rodapé e secções</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/info.php">
+  <a class="admin-cms-card" href="<?= url('admin/info.php') ?>">
     <span class="admin-cms-ico"><?= icon('phone') ?></span>
     <strong>Informações &amp; contacto</strong>
     <span>Nome, WhatsApp, horário, localização</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/zonas.php">
+  <a class="admin-cms-card" href="<?= url('admin/zonas.php') ?>">
     <span class="admin-cms-ico"><?= icon('map') ?></span>
     <strong>Zonas de entrega</strong>
     <span>Taxas, tempos e cobertura em Bissau</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/produtos.php">
+  <a class="admin-cms-card" href="<?= url('admin/produtos.php') ?>">
     <span class="admin-cms-ico"><?= icon('shirt') ?></span>
     <strong>Produtos &amp; stock</strong>
     <span>Catálogo, preços e promoções por peça</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/promocoes.php">
+  <a class="admin-cms-card" href="<?= url('admin/promocoes.php') ?>">
     <span class="admin-cms-ico"><?= icon('tag') ?></span>
     <strong>Promoções &amp; alertas</strong>
     <span>Barras de promoção no topo da loja</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/configuracoes.php">
+  <a class="admin-cms-card" href="<?= url('admin/configuracoes.php') ?>">
     <span class="admin-cms-ico"><?= icon('settings') ?></span>
     <strong>Opções da loja</strong>
     <span>Stock visível, loja aberta, alertas</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/pedidos.php">
+  <a class="admin-cms-card" href="<?= url('admin/pedidos.php') ?>">
     <span class="admin-cms-ico"><?= icon('bag') ?></span>
     <strong>Pedidos</strong>
     <span>Gestão de encomendas COD</span>
   </a>
-  <a class="admin-cms-card" href="/No_chao/admin/entregadores.php">
+  <a class="admin-cms-card" href="<?= url('admin/entregadores.php') ?>">
     <span class="admin-cms-ico"><?= icon('truck') ?></span>
     <strong>Entregadores</strong>
     <span>Aprovar e gerir entregadores</span>

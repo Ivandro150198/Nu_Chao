@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 flash('error', 'Não foi possível actualizar o pedido.');
             }
         }
-        redirect('/No_chao/admin/pedidos.php' . ($id ? '?id=' . $id : ''));
+        redirect(url('admin/pedidos.php') . ($id ? '?id=' . $id : ''));
     }
 
     if ($acao === 'atribuir') {
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ->execute([$entregadorId, $id]);
             flash('success', 'Entregador atribuído.');
         }
-        redirect('/No_chao/admin/pedidos.php?id=' . $id);
+        redirect(url('admin/pedidos.php?id=') . $id);
     }
 }
 
@@ -182,7 +182,7 @@ admin_header('Pedidos', 'pedidos');
           <button class="btn ghost" type="submit">Actualizar estado</button>
         </form>
       </div>
-      <p class="help"><a href="/No_chao/admin/pedidos.php">← Voltar à lista</a></p>
+      <p class="help"><a href="<?= url('admin/pedidos.php') ?>">← Voltar à lista</a></p>
     </div>
   </div>
 <?php endif; ?>

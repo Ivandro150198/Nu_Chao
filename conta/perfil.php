@@ -13,7 +13,7 @@ $stmt->execute([$user['id']]);
 $perfil = $stmt->fetch();
 if (!$perfil) {
     logout_user();
-    redirect('/No_chao/auth/login.php');
+    redirect(url('auth/login.php'));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $perfil['telefone'] = $telefone;
             $ok = true;
             flash('success', 'Perfil actualizado.');
-            redirect('/No_chao/conta/perfil.php');
+            redirect(url('conta/perfil.php'));
         }
     }
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->prepare('UPDATE usuarios SET senha_hash = ? WHERE id = ?')
                 ->execute([password_hash($nova, PASSWORD_DEFAULT), $user['id']]);
             flash('success', 'Palavra-passe actualizada.');
-            redirect('/No_chao/conta/perfil.php');
+            redirect(url('conta/perfil.php'));
         }
     }
 }
@@ -82,13 +82,13 @@ require __DIR__ . '/../includes/header.php';
       <span class="pill pill-cat"><?= e($perfil['tipo']) ?></span>
       <?php if ($perfil['tipo'] === 'CLIENTE'): ?>
         <p class="muted" style="margin-top:0.85rem"><?= (int) $pedidosCount ?> pedido(s)</p>
-        <a class="btn primary block" href="/No_chao/conta/meus_pedidos.php" style="margin-top:0.75rem">
+        <a class="btn primary block" href="<?= url('conta/meus_pedidos.php') ?>" style="margin-top:0.75rem">
           <?= icon('bag', 'icon') ?> Os meus pedidos
         </a>
       <?php elseif ($perfil['tipo'] === 'ADMIN'): ?>
-        <a class="btn primary block" href="/No_chao/admin/" style="margin-top:0.75rem"><?= icon('package', 'icon') ?> Gestão</a>
+        <a class="btn primary block" href="<?= url('admin/') ?>" style="margin-top:0.75rem"><?= icon('package', 'icon') ?> Gestão</a>
       <?php elseif ($perfil['tipo'] === 'ENTREGADOR'): ?>
-        <a class="btn primary block" href="/No_chao/entregador/" style="margin-top:0.75rem"><?= icon('truck', 'icon') ?> Entregas</a>
+        <a class="btn primary block" href="<?= url('entregador/') ?>" style="margin-top:0.75rem"><?= icon('truck', 'icon') ?> Entregas</a>
       <?php endif; ?>
     </aside>
 

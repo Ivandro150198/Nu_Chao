@@ -26,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt->execute([$nome, $descricao ?: null, $taxa, $tempo ?: null, $ativa, $id]);
             flash('success', 'Zona actualizada.');
-            redirect('/No_chao/admin/zonas.php');
+            redirect(url('admin/zonas.php'));
         } else {
             $stmt = $pdo->prepare(
                 'INSERT INTO zonas_entrega (nome, descricao, taxa, tempo_estimado, ativa) VALUES (?,?,?,?,?)'
             );
             $stmt->execute([$nome, $descricao ?: null, $taxa, $tempo ?: null, $ativa]);
             flash('success', 'Zona criada.');
-            redirect('/No_chao/admin/zonas.php');
+            redirect(url('admin/zonas.php'));
         }
     }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $pdo->prepare('UPDATE zonas_entrega SET ativa = 1 - ativa WHERE id = ?')->execute([$id]);
         flash('success', 'Estado da zona actualizado.');
-        redirect('/No_chao/admin/zonas.php');
+        redirect(url('admin/zonas.php'));
     }
 }
 
@@ -64,7 +64,7 @@ admin_header('Zonas de entrega', 'zonas');
     <p>Taxas e tempos usados no checkout e na página Sobre.</p>
   </div>
   <div class="head-actions">
-    <a class="btn ghost sm" href="/No_chao/admin/site.php">← Site</a>
+    <a class="btn ghost sm" href="<?= url('admin/site.php') ?>">← Site</a>
     <button type="button" class="btn primary sm" data-open-modal="modalZona">+ Nova zona</button>
   </div>
 </div>

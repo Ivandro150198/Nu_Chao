@@ -101,8 +101,8 @@ require __DIR__ . '/../includes/header.php';
       <p class="muted"><?= e(site_cfg('sobre_cta_texto')) ?></p>
     </div>
     <div class="hero-actions">
-      <a class="btn primary" href="/No_chao/index.php#produtos"><?= icon('shirt', 'icon') ?> Ver produtos</a>
-      <a class="btn ghost" href="/No_chao/loja/contacto.php"><?= icon('phone', 'icon') ?> Contacto</a>
+      <a class="btn primary" href="<?= url('index.php#produtos') ?>"><?= icon('shirt', 'icon') ?> Ver produtos</a>
+      <a class="btn ghost" href="<?= url('loja/contacto.php') ?>"><?= icon('phone', 'icon') ?> Contacto</a>
     </div>
   </div>
 </section>

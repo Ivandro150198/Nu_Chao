@@ -19,7 +19,7 @@ $googleOk = function_exists('google_configurado') && google_configurado();
       <p class="muted">Escolha o tipo de conta. Clientes compram de imediato; entregadores precisam de aprovação.</p>
       <p class="modal-error" id="registerError" hidden></p>
 
-      <form id="registerForm" method="post" action="/No_chao/api/registar.php" novalidate>
+      <form id="registerForm" method="post" action="<?= url('api/registar.php') ?>" novalidate>
         <?= csrf_field() ?>
         <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true">
         <div class="form-group">
@@ -73,7 +73,7 @@ $googleOk = function_exists('google_configurado') && google_configurado();
         <p class="help">O tipo seleccionado acima será usado na conta Google.</p>
       <?php endif; ?>
 
-      <p class="help">Já tem conta? <a href="/No_chao/auth/login.php">Entrar</a></p>
+      <p class="help">Já tem conta? <a href="<?= url('auth/login.php') ?>">Entrar</a></p>
     </div>
   </div>
 </div>

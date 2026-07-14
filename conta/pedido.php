@@ -6,7 +6,7 @@ require_once __DIR__ . '/../includes/icons.php';
 $user = require_login();
 if (!in_array($user['tipo'], ['CLIENTE', 'ADMIN'], true)) {
     flash('error', 'Área disponível para clientes.');
-    redirect('/No_chao/index.php');
+    redirect(url('index.php'));
 }
 
 $pdo = db();
@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'cancela
             "UPDATE pedidos SET status_pedido = 'CANCELADO', status_pagamento = 'CANCELADO' WHERE id = ?"
         )->execute([$cancelId]);
         flash('info', 'Pedido cancelado.');
-        redirect('/No_chao/conta/pedido.php?id=' . $cancelId);
+        redirect(url('conta/pedido.php?id=') . $cancelId);
     }
     flash('error', 'Este pedido já não pode ser cancelado.');
-    redirect('/No_chao/conta/meus_pedidos.php');
+    redirect(url('conta/meus_pedidos.php'));
 }
 
 if ($id > 0) {
@@ -59,13 +59,13 @@ if ($id > 0) {
     );
     $stmt->execute([$codigo, $user['id']]);
 } else {
-    redirect('/No_chao/conta/meus_pedidos.php');
+    redirect(url('conta/meus_pedidos.php'));
 }
 
 $pedido = $stmt->fetch();
 if (!$pedido) {
     flash('error', 'Pedido não encontrado.');
-    redirect('/No_chao/conta/meus_pedidos.php');
+    redirect(url('conta/meus_pedidos.php'));
 }
 
 $itensStmt = $pdo->prepare(
@@ -91,7 +91,7 @@ require __DIR__ . '/../includes/header.php';
 
 <section class="page-hero">
   <div class="container page-hero-inner">
-    <p class="eyebrow"><a href="/No_chao/conta/meus_pedidos.php"><?= icon('bag', 'icon inline') ?> Os meus pedidos</a></p>
+    <p class="eyebrow"><a href="<?= url('conta/meus_pedidos.php') ?>"><?= icon('bag', 'icon inline') ?> Os meus pedidos</a></p>
     <h1>Pedido <?= e($pedido['codigo']) ?></h1>
     <p>Acompanhe em tempo real o estado da sua encomenda.</p>
   </div>
@@ -139,7 +139,7 @@ require __DIR__ . '/../includes/header.php';
             <button class="btn danger" type="submit"><?= icon('close', 'icon') ?> Cancelar pedido</button>
           </form>
         <?php endif; ?>
-        <a class="btn ghost" href="/No_chao/conta/meus_pedidos.php"><?= icon('bag', 'icon') ?> Voltar aos pedidos</a>
+        <a class="btn ghost" href="<?= url('conta/meus_pedidos.php') ?>"><?= icon('bag', 'icon') ?> Voltar aos pedidos</a>
       </div>
     </div>
 

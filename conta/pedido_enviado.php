@@ -7,7 +7,7 @@ require_login();
 
 $ultimo = $_SESSION['ultimo_pedido_whatsapp'] ?? null;
 if (!$ultimo || empty($ultimo['url'])) {
-    redirect('/No_chao/conta/meus_pedidos.php');
+    redirect(url('conta/meus_pedidos.php'));
 }
 
 $whatsappUrl = $ultimo['url'];
@@ -16,8 +16,8 @@ $pedidoId = (int) ($ultimo['id'] ?? 0);
 unset($_SESSION['ultimo_pedido_whatsapp']);
 
 $trackUrl = $pedidoId > 0
-    ? '/No_chao/conta/pedido.php?id=' . $pedidoId
-    : '/No_chao/conta/meus_pedidos.php';
+    ? url('conta/pedido.php?id=') . $pedidoId
+    : url('conta/meus_pedidos.php');
 
 $pageTitle = 'Pedido enviado — Nu Chao';
 require __DIR__ . '/../includes/header.php';
@@ -36,7 +36,7 @@ require __DIR__ . '/../includes/header.php';
       <p class="help">
         <a class="btn ghost block" href="<?= e($trackUrl) ?>"><?= icon('truck', 'icon') ?> Acompanhar este pedido</a>
       </p>
-      <p class="help"><a href="/No_chao/conta/meus_pedidos.php">Ver todos os pedidos</a></p>
+      <p class="help"><a href="<?= url('conta/meus_pedidos.php') ?>">Ver todos os pedidos</a></p>
     </div>
   </div>
 </section>
